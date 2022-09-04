@@ -29,7 +29,6 @@ import EmailOutline from 'mdi-material-ui/EmailOutline'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import MessageOutline from 'mdi-material-ui/MessageOutline'
 
-
 // ** Icons Imports
 import Google from 'mdi-material-ui/Google'
 import Github from 'mdi-material-ui/Github'
@@ -100,24 +99,16 @@ const RegisterPage = () => {
               version='1.1'
               viewBox='0 0 30 23'
               xmlns='http://www.w3.org/2000/svg'
-              xmlnsAlink='http://www.w3.org/1999/xlink'
-            >
-              
-            </svg>
+              xmlnsXlink='http://www.w3.org/1999/xlink'
+            ></svg>
             <Grid item xs={12}>
               <Typography variant='h5'>Create/Update Product</Typography>
             </Grid>
           </Box>
-          
-          
+
           <Grid container spacing={5}>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label='Name'
-                placeholder='Drink 250ml'
-                
-              />
+              <TextField fullWidth label='Name' placeholder='Drink 250ml' />
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -127,21 +118,12 @@ const RegisterPage = () => {
                 label='Description'
                 placeholder='describe the product'
                 sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
-                
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                type='Price'
-                label='Price'
-                placeholder='9999999'
-                
-                
-              />
+              <TextField fullWidth type='Price' label='Price' placeholder='9999999' />
             </Grid>
-            
-            
+
             <Grid item xs={12} sm={12}>
               <FormControl fullWidth>
                 <InputLabel id='form-layouts-separator-select-label'>Unit</InputLabel>
@@ -159,24 +141,16 @@ const RegisterPage = () => {
               </FormControl>
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                type='Unit Size'
-                label='Unit Size'
-                placeholder='25'
-                
-                
-              />
+              <TextField fullWidth type='Unit Size' label='Unit Size' placeholder='25' />
             </Grid>
-        <CardActions>
-          <Button size='large'  type='submit' sx={{ mr: 35 }} variant='contained'
-          href='/products'>
-            Submit
-          </Button>
-          <Button size='large'  variant='contained'>
-            Cancel
-          </Button>
-        </CardActions>
+            <CardActions>
+              <Button size='large' type='submit' sx={{ mr: 35 }} variant='contained' href='/products'>
+                Submit
+              </Button>
+              <Button size='large' variant='contained'>
+                Cancel
+              </Button>
+            </CardActions>
           </Grid>
         </CardContent>
       </Card>
