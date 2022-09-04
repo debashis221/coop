@@ -1,23 +1,16 @@
 // ** React Imports
-import { useState, Fragment } from 'react'
-
-// ** Next Imports
-import Link from 'next/link'
+import { useState } from 'react'
 
 // ** MUI Components
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
-import Checkbox from '@mui/material/Checkbox'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import InputLabel from '@mui/material/InputLabel'
-import IconButton from '@mui/material/IconButton'
 import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import { styled, useTheme } from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import MuiCard from '@mui/material/Card'
 import InputAdornment from '@mui/material/InputAdornment'
 import MuiFormControlLabel from '@mui/material/FormControlLabel'
@@ -26,22 +19,6 @@ import MenuItem from '@mui/material/MenuItem'
 import Phone from 'mdi-material-ui/Phone'
 import EmailOutline from 'mdi-material-ui/EmailOutline'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
-import MessageOutline from 'mdi-material-ui/MessageOutline'
-
-
-// ** Icons Imports
-import Google from 'mdi-material-ui/Google'
-import Github from 'mdi-material-ui/Github'
-import Twitter from 'mdi-material-ui/Twitter'
-import Facebook from 'mdi-material-ui/Facebook'
-import EyeOutline from 'mdi-material-ui/EyeOutline'
-import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
-
-// ** Configs
-import themeConfig from 'src/configs/themeConfig'
-
-// ** Layout Import
-import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
@@ -91,7 +68,7 @@ const RegisterPage = () => {
   return (
     <Box className='content-center'>
       <Card sx={{ zIndex: 1 }}>
-        <CardContent sx={{ padding: theme => `${theme.spacing(12, )} !important` }}>
+        <CardContent sx={{ padding: theme => `${theme.spacing(12)} !important` }}>
           <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg
               width={35}
@@ -100,15 +77,12 @@ const RegisterPage = () => {
               viewBox='0 0 30 23'
               xmlns='http://www.w3.org/2000/svg'
               xmlnsXlink='http://www.w3.org/1999/xlink'
-            >
-              
-            </svg>
+            ></svg>
             <Grid item xs={12}>
               <Typography variant='h5'>Creat/Update User</Typography>
             </Grid>
           </Box>
-          
-          
+
           <Grid container spacing={5}>
             <Grid item xs={12}>
               <TextField
@@ -144,7 +118,6 @@ const RegisterPage = () => {
                 type='email'
                 label='Email'
                 placeholder='Email'
-                
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position='start'>
@@ -170,19 +143,7 @@ const RegisterPage = () => {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                type='password'
-                label='Password'
-                placeholder='Password'
-                InputProps={{
-                  // startAdornment: (
-                  //   <InputAdornment position='start'>
-                  //     <Phone />
-                  //   </InputAdornment>
-                  // )
-                }}
-              />
+              <TextField fullWidth type='password' label='Password' placeholder='Password' InputProps={{}} />
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -190,16 +151,10 @@ const RegisterPage = () => {
                 type='confirm password'
                 label='confirm password'
                 placeholder='Confirm Password'
-                InputProps={{
-                  // startAdornment: (
-                  //   <InputAdornment position='start'>
-                  //     <Phone />
-                  //   </InputAdornment>
-                  // )
-                }}
+                InputProps={{}}
               />
             </Grid>
-            
+
             <Grid item xs={12} sm={12}>
               <FormControl fullWidth>
                 <InputLabel id='form-layouts-separator-select-label'>Country</InputLabel>
@@ -218,9 +173,7 @@ const RegisterPage = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <Button type='submit' variant='contained' size='large'
-             href='/user'>
-                
+              <Button type='submit' variant='contained' size='large' href='/user'>
                 Submit
               </Button>
             </Grid>
@@ -231,6 +184,5 @@ const RegisterPage = () => {
     </Box>
   )
 }
-// RegisterPage.getLayout = page => <BlankLayout>{page}</BlankLayout>
 
 export default RegisterPage
