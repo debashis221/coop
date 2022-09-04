@@ -9,12 +9,10 @@ import { useRouter } from 'next/router'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
 import Checkbox from '@mui/material/Checkbox'
 import TextField from '@mui/material/TextField'
 import InputLabel from '@mui/material/InputLabel'
 import Typography from '@mui/material/Typography'
-import IconButton from '@mui/material/IconButton'
 import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
 import OutlinedInput from '@mui/material/OutlinedInput'
@@ -23,22 +21,14 @@ import MuiCard from '@mui/material/Card'
 import InputAdornment from '@mui/material/InputAdornment'
 import MuiFormControlLabel from '@mui/material/FormControlLabel'
 
-// ** Icons Imports
-import Google from 'mdi-material-ui/Google'
-import Github from 'mdi-material-ui/Github'
-import Twitter from 'mdi-material-ui/Twitter'
-import Facebook from 'mdi-material-ui/Facebook'
-import EyeOutline from 'mdi-material-ui/EyeOutline'
-import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
-
-// ** Configs
-import themeConfig from 'src/configs/themeConfig'
-
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
+import { axiosHelper } from 'src/axios/axios'
+import { useDispatch } from 'react-redux'
+import { login } from 'src/redux/features/authSlice'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -62,32 +52,33 @@ const LoginPage = () => {
   // ** State
   const [values, setValues] = useState({
     password: '',
-    showPassword: false
+    showPassword: false,
+    number: ''
   })
 
-  // ** Hook
-  const theme = useTheme()
+  const dispatch = useDispatch()
+  const onSubmit = async () => {
+    const formData = new FormData()
+    formData.append('phone', values.number)
+    formData.append('pass', values.password)
+    await axiosHelper.post('/user/login', formData).then(res => {
+      if (res.data.token) {
+        dispatch(login(res.data))
+        router.push('/')
+      }
+    })
+  }
   const router = useRouter()
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
   }
 
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword })
-  }
-
-  const handleMouseDownPassword = event => {
-    event.preventDefault()
-  }
-
   return (
     <Box className='content-center'>
       <Card sx={{ zIndex: 1 }}>
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
-          
-
-        <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg
               width={35}
               height={29}
@@ -95,16 +86,22 @@ const LoginPage = () => {
               viewBox='0 0 30 23'
               xmlns='http://www.w3.org/2000/svg'
               xmlnsAlink='http://www.w3.org/1999/xlink'
-            >
-              
-            </svg>
+            ></svg>
             <Grid item xs={12}>
               <Typography variant='h5'>Login</Typography>
             </Grid>
           </Box>
-          
+
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='email' label='PhoneNmber' sx={{ marginBottom: 4 }} />
+            <TextField
+              autoFocus
+              fullWidth
+              id='email'
+              type='number'
+              onChange={handleChange('number')}
+              label='PhoneNmber'
+              sx={{ marginBottom: 4 }}
+            />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
@@ -113,11 +110,7 @@ const LoginPage = () => {
                 id='auth-login-password'
                 onChange={handleChange('password')}
                 type={values.showPassword ? 'text' : 'password'}
-                endAdornment={
-                  <InputAdornment position='end'>
-                    
-                  </InputAdornment>
-                }
+                endAdornment={<InputAdornment position='end'></InputAdornment>}
               />
             </FormControl>
             <Box
@@ -128,17 +121,9 @@ const LoginPage = () => {
                 <LinkStyled onClick={e => router.push('/forgetpassword')}>Forgot Password?</LinkStyled>
               </Link>
             </Box>
-            <Button
-              fullWidth
-              size='large'
-              variant='contained'
-              sx={{ marginBottom: 7 }}
-              onClick={() => router.push('/')}
-            >
+            <Button fullWidth size='large' variant='contained' sx={{ marginBottom: 7 }} onClick={onSubmit}>
               Login
             </Button>
-            
-            
           </form>
         </CardContent>
       </Card>
