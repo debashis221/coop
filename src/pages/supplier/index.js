@@ -155,6 +155,5 @@ const RegisterPage = () => {
     </Box>
   )
 }
-// RegisterPage.getLayout = page => <BlankLayout>{page}</BlankLayout>
 
 export default RegisterPage

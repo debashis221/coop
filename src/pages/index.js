@@ -24,6 +24,7 @@ const Dashboard = () => {
   if (user.loggedIn) {
     notify()
   }
+  
   return (
     <ApexChartWrapper>
       <Toaster />
