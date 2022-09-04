@@ -82,7 +82,6 @@ const LoginPage = () => {
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
   }
-  const user = useSelector(state => state.auth.user)
 
   return (
     <Box className='content-center'>

@@ -18,6 +18,7 @@ import { useDispatch } from 'react-redux'
 import { getUsers } from 'src/redux/features/usersSlice'
 import toast, { Toaster } from 'react-hot-toast'
 import TextField from '@mui/material/TextField'
+import { useRouter } from 'next/router'
 
 const TableStickyHeader = ({ columns, rows }) => {
   // ** States
@@ -25,6 +26,7 @@ const TableStickyHeader = ({ columns, rows }) => {
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [filterData, setFilterData] = useState(null)
   const dispatch = useDispatch()
+  const router = useRouter()
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
   }
@@ -37,12 +39,9 @@ const TableStickyHeader = ({ columns, rows }) => {
   const handleDelete = async id => {
     const formData = new FormData()
     formData.append('id', id)
-    console.log(JSON.stringify(formData))
-    console.log(id)
     await axiosHelper.delete('/user', formData).then(res => {
       if (res.data) {
         getUsersData()
-        console.log(res.data)
         toast.success('User Deleted Successfully')
       } else {
         toast.error('Something weng wromg!')
@@ -62,19 +61,36 @@ const TableStickyHeader = ({ columns, rows }) => {
     })
     setFilterData(result)
   }
-  console.log(filterData)
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <Toaster />
       <TableContainer sx={{ maxHeight: 440 }}>
-        <TextField
-          autoFocus
-          id='email'
-          type='text'
-          onChange={handleSearch()}
-          sx={{ marginBottom: 4, float: 'right', marginRight: 5 }}
-          placeholder="Enter Phone Number"
-        />
+        <Grid container>
+          <Grid item container direction='row'>
+            <Grid item xs={12} sm={6}></Grid>
+            <Grid item xs={12} sm={6}>
+              <Button
+                size='small'
+                variant='contained'
+                sx={{ float: 'right', marginRight: 6, marginTop: 3 }}
+                onClick={() => router.push('/createuser')}
+              >
+                <Typography variant='p' color='common.white'>
+                  Add
+                </Typography>
+              </Button>
+              <TextField
+                autoFocus
+                id='email'
+                type='text'
+                onChange={handleSearch()}
+                sx={{ marginBottom: 4, float: 'right', marginRight: 5 }}
+                placeholder='Enter Phone Number'
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+
         <Table stickyHeader aria-label='sticky table'>
           <TableHead>
             <TableRow>
