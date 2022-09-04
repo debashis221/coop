@@ -1,9 +1,10 @@
 // ** React Imports
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useSelector } from 'react-redux'
 
 // ** MUI Components
 import Box from '@mui/material/Box'
@@ -29,6 +30,7 @@ import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import { axiosHelper } from 'src/axios/axios'
 import { useDispatch } from 'react-redux'
 import { login } from 'src/redux/features/authSlice'
+import toast, { Toaster } from 'react-hot-toast'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -57,26 +59,34 @@ const LoginPage = () => {
   })
 
   const dispatch = useDispatch()
+  const router = useRouter()
 
   const onSubmit = async () => {
     const formData = new FormData()
     formData.append('phone', values.number)
     formData.append('pass', values.password)
+    const push = () => {
+      router.push('/')
+    }
     await axiosHelper.post('/user/login', formData).then(res => {
       if (res.data.token) {
         dispatch(login(res.data))
-        router.push('/')
+        toast.success(res.data.status)
+        setTimeout(push(), 3000)
+      } else {
+        toast.error(res.data.status)
       }
     })
   }
-  const router = useRouter()
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
   }
+  const user = useSelector(state => state.auth.user)
 
   return (
     <Box className='content-center'>
+      <Toaster />
       <Card sx={{ zIndex: 1 }}>
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
           <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

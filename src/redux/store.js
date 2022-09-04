@@ -1,6 +1,26 @@
-import { configureStore } from '@reduxjs/toolkit'
+// src/redux/store.js
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import storage from 'redux-persist/lib/storage'
+import { persistReducer, persistStore } from 'redux-persist'
+import thunk from 'redux-thunk'
 import authSlice from './features/authSlice'
+import usersSlice from './features/usersSlice'
+import ordersSlice from './features/orderSlice'
+
+const persistConfig = {
+  key: 'root',
+  blacklist: ['auth'],
+  throttle: 500,
+  version: 1,
+  storage
+}
+const rootReducer = combineReducers({ auth: authSlice, users: usersSlice, orders: ordersSlice })
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const store = configureStore({
-  reducer: { auth: authSlice }
+  reducer: persistedReducer,
+  middleware: [thunk]
 })
+
+export const persistor = persistStore(store)

@@ -65,7 +65,9 @@
     "react-hot-toast": "^2.3.0",
     "react-perfect-scrollbar": "^1.5.8",
     "react-popper": "^2.2.5",
-    "react-redux": "^8.0.2"
+    "react-redux": "^8.0.2",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.4.1"
   },
   "devDependencies": {
     "eslint": "^7.32.0",

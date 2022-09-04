@@ -21,27 +21,22 @@ const TrophyImg = styled('img')({
   position: 'absolute'
 })
 
-const Trophy = () => {
+const Trophy = users => {
   // ** Hook
   const theme = useTheme()
   const imageSrc = theme.palette.mode === 'light' ? 'triangle-light.png' : 'triangle-dark.png'
-
   return (
     <Card sx={{ position: 'relative' }}>
-    <CardContent>
-      <Typography variant='h6'>5</Typography>
-      <Typography variant='h6'>Users</Typography>
-      <Typography variant='body2' sx={{ letterSpacing: '0.25px' }}>
-       
-      </Typography>
-      
-      <Button size='small'>
-        
-      </Button>
-      <TriangleImg alt='triangle background' src={`/images/misc/${imageSrc}`} />
-      <TrophyImg alt='trophy' src='/images/misc/60111.jpg' />
-    </CardContent>
-  </Card>
+      <CardContent>
+        <Typography variant='h6'>{users?.users?.length}</Typography>
+        <Typography variant='h6'>Users</Typography>
+        <Typography variant='body2' sx={{ letterSpacing: '0.25px' }}></Typography>
+
+        <Button size='small'></Button>
+        <TriangleImg alt='triangle background' src={`/images/misc/${imageSrc}`} />
+        <TrophyImg alt='trophy' src='/images/misc/60111.jpg' />
+      </CardContent>
+    </Card>
   )
 }
 

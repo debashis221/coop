@@ -22,6 +22,8 @@ import LogoutVariant from 'mdi-material-ui/LogoutVariant'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import MessageOutline from 'mdi-material-ui/MessageOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
+import { useDispatch } from 'react-redux'
+import { logout } from 'src/redux/features/authSlice'
 
 // ** Styled Components
 const BadgeContentSpan = styled('span')(({ theme }) => ({
@@ -35,6 +37,7 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
 const UserDropdown = () => {
   // ** States
   const [anchorEl, setAnchorEl] = useState(null)
+  const dispatch = useDispatch()
 
   // ** Hooks
   const router = useRouter()
@@ -44,10 +47,8 @@ const UserDropdown = () => {
   }
 
   const handleDropdownClose = url => {
-    if (url) {
-      router.push(url)
-    }
-    setAnchorEl(null)
+    dispatch(logout())
+    router.push('/login')
   }
 
   const styles = {
