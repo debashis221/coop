@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // ** MUI Components
 import Box from '@mui/material/Box'
@@ -7,20 +7,16 @@ import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import InputLabel from '@mui/material/InputLabel'
 import CardContent from '@mui/material/CardContent'
-import FormControl from '@mui/material/FormControl'
 import { styled } from '@mui/material/styles'
 import MuiCard from '@mui/material/Card'
-import Select from '@mui/material/Select'
-import MenuItem from '@mui/material/MenuItem'
 import CardActions from '@mui/material/CardActions'
-import toast, { Toaster } from 'react-hot-toast'
 import axios from 'axios'
-
+import toast from 'react-hot-toast'
+import { axiosHelper } from 'src/axios/axios'
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
-import router from 'next/router'
+import { useRouter } from 'next/router'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -28,41 +24,48 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }))
 
 const RegisterPage = () => {
-  // ** Hook
+  const [supplierData, setSupplierData] = useState(null)
+  const router = useRouter()
   const [values, setValues] = useState({
     name: '',
-    description: '',
-    price: '',
-    unit: '',
-    unitSize: ''
+    branchname: '',
+    number: ''
   })
+  const { id } = router.query
+  const getSupplierData = async () => {
+    axiosHelper.get(`/supp?id=${id}`).then(res => {
+      setSupplierData(res.data && res.data[0])
+    })
+  }
+  useEffect(() => {
+    getSupplierData()
+    return () => {}
+  }, [id])
+  // ** States
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
   }
   const handleSubmit = async () => {
     const formData = new FormData()
-    formData.append('name', values.name)
-    formData.append('description', values.description)
-    formData.append('price', values.price)
-    formData.append('unit', values.unit)
-    formData.append('unit_size', values.unitSize)
+    formData.append('id', id)
+    formData.append('name', values.name ? values.name : supplierData.coop)
+    formData.append('branchname', values.branchname ? values.branchname : supplierData.coop_branch)
+    formData.append('number', values.number ? values.number : supplierData.supp_no)
     await axios
-      .post('http://137.184.215.16:8000/api/v1.0/prod', formData, {
+      .put('http://137.184.215.16:8000/api/v1.0/supp', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
       .then(res => {
-        console.log(res.data)
         if (res.data.status == 'error') {
           toast.error('Something went wrong! Please Check All The Fields!')
         } else {
-          toast.success('Product Added Successfully!')
-          router.push('/products')
+          toast.success('Supplier Updated Successfully!')
+          router.push('/suppliers')
         }
       })
   }
-
   return (
     <Grid
       container
@@ -85,61 +88,42 @@ const RegisterPage = () => {
                 xmlnsXlink='http://www.w3.org/1999/xlink'
               ></svg>
               <Grid item xs={12}>
-                <Typography variant='h5'>Create/Update Product</Typography>
+                <Typography variant='h5'>Create/Update Supplier</Typography>
               </Grid>
             </Box>
 
             <Grid container spacing={5}>
               <Grid item xs={12}>
-                <TextField fullWidth label='Name' placeholder='Drink 250ml' onChange={handleChange('name')} />
+                <TextField
+                  fullWidth
+                  label='Name'
+                  placeholder={supplierData && supplierData.coop}
+                  onChange={handleChange('name')}
+                />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   fullWidth
                   multiline
                   minRows={3}
-                  label='Description'
-                  onChange={handleChange('description')}
-                  placeholder='describe the product'
+                  label='Branch Name'
+                  placeholder={supplierData && supplierData.coop_branch}
+                  onChange={handleChange('branchname')}
                   sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  type='Price'
-                  label='Price'
-                  placeholder='9999999'
-                  onChange={handleChange('price')}
+                  type='Number'
+                  label='Supplier Number'
+                  placeholder={supplierData && supplierData.supp_no}
+                  onChange={handleChange('number')}
                 />
               </Grid>
 
-              <Grid item xs={12} sm={12}>
-                <FormControl fullWidth>
-                  <InputLabel id='form-layouts-separator-select-label'>Unit</InputLabel>
-                  <Select
-                    label='Country'
-                    defaultValue=''
-                    id='form-layouts-separator-select'
-                    labelId='form-layouts-separator-select-label'
-                    onChange={handleChange('unit')}
-                  >
-                    <MenuItem value='KG'>KG</MenuItem>
-                    <MenuItem value='LB'>LB</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  type='Unit Size'
-                  label='Unit Size'
-                  placeholder='25'
-                  onChange={handleChange('unitSize')}
-                />
-              </Grid>
               <CardActions>
-                <Button size='large' onClick={handleSubmit} type='submit' sx={{ mr: 35 }} variant='contained'>
+                <Button size='large' type='submit' sx={{ mr: 35 }} variant='contained' onClick={handleSubmit}>
                   Submit
                 </Button>
                 <Button size='large' variant='contained'>

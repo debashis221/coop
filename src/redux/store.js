@@ -7,19 +7,18 @@ import authSlice from './features/authSlice'
 import usersSlice from './features/usersSlice'
 import ordersSlice from './features/orderSlice'
 import productsSlice from './features/productsSlice'
+import supplierSlice from './features/supplierSlice'
 
 const persistConfig = {
   key: 'root',
-  blacklist: ['auth'],
-  throttle: 500,
-  version: 1,
   storage
 }
 const rootReducer = combineReducers({
   auth: authSlice,
   users: usersSlice,
   orders: ordersSlice,
-  products: productsSlice
+  products: productsSlice,
+  suppliers: supplierSlice
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

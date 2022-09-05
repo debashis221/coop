@@ -31,7 +31,7 @@ const navigation = () => {
     {
       title: 'Suppliers',
       icon: Table,
-      path: '/supplier'
+      path: '/suppliers'
     },
     
   ]

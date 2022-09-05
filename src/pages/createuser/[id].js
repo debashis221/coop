@@ -57,7 +57,6 @@ const RegisterPage = () => {
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
   }
-
   const handleSubmit = async () => {
     const formData = new FormData()
     formData.append('user_id', 12)
@@ -109,8 +108,7 @@ const RegisterPage = () => {
                 <TextField
                   fullWidth
                   label='First Name'
-                  defaultValue={userdata.fname}
-                  placeholder='First Name'
+                  placeholder={userdata && userdata.fname}
                   onChange={handleChange('fname')}
                   required
                   InputProps={{
@@ -126,9 +124,8 @@ const RegisterPage = () => {
                 <TextField
                   fullWidth
                   label='Last Name'
-                  placeholder='Last Name'
+                  placeholder={userdata && userdata?.lname}
                   onChange={handleChange('lname')}
-                  defaultValue={userdata.lname}
                   required
                   InputProps={{
                     startAdornment: (
@@ -144,9 +141,8 @@ const RegisterPage = () => {
                   fullWidth
                   type='email'
                   label='Email'
-                  placeholder='Email'
+                  placeholder={userdata && userdata?.email}
                   onChange={handleChange('email')}
-                  defaultValue={userdata.email}
                   required
                   InputProps={{
                     startAdornment: (
@@ -161,9 +157,8 @@ const RegisterPage = () => {
                 <TextField
                   fullWidth
                   label='Phone No.'
-                  placeholder='Phone No'
+                  placeholder={userdata && userdata?.phone}
                   onChange={handleChange('number')}
-                  defaultValue={userdata.phone}
                   required
                   InputProps={{
                     startAdornment: (

@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // ** MUI Components
 import Box from '@mui/material/Box'
@@ -17,6 +17,7 @@ import MenuItem from '@mui/material/MenuItem'
 import CardActions from '@mui/material/CardActions'
 import toast, { Toaster } from 'react-hot-toast'
 import axios from 'axios'
+import { axiosHelper } from 'src/axios/axios'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
@@ -28,6 +29,8 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }))
 
 const RegisterPage = () => {
+  const { id } = router.query
+  const [productData, setProductData] = useState(null)
   // ** Hook
   const [values, setValues] = useState({
     name: '',
@@ -39,22 +42,34 @@ const RegisterPage = () => {
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
   }
+  useEffect(() => {
+    getProductData()
+    return () => {}
+  }, [])
+
+  const getProductData = async () => {
+    axiosHelper.get(`/prod?id=${id}`).then(res => {
+      setProductData(res.data[0])
+    })
+  }
+
   const handleSubmit = async () => {
     const formData = new FormData()
-    formData.append('name', values.name)
-    formData.append('description', values.description)
-    formData.append('price', values.price)
-    formData.append('unit', values.unit)
-    formData.append('unit_size', values.unitSize)
+    formData.append('id', id)
+    formData.append('name', values.name != null ? values.name : productData.name)
+    formData.append('description', values.description != null ? values.description : productData.description)
+    formData.append('price', values.price != null ? values.price : productData.price)
+    formData.append('unit', values.unit != null ? values.unit : productData.unit)
+    formData.append('unit_size', values.unitSize != null ? values.unitSize : productData.unit_size)
     await axios
-      .post('http://137.184.215.16:8000/api/v1.0/prod', formData, {
+      .put('http://137.184.215.16:8000/api/v1.0/prod', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
       .then(res => {
         console.log(res.data)
-        if (res.data.status == 'error') {
+        if (res.data.data.status == 'error') {
           toast.error('Something went wrong! Please Check All The Fields!')
         } else {
           toast.success('Product Added Successfully!')
@@ -62,7 +77,6 @@ const RegisterPage = () => {
         }
       })
   }
-
   return (
     <Grid
       container
@@ -91,7 +105,12 @@ const RegisterPage = () => {
 
             <Grid container spacing={5}>
               <Grid item xs={12}>
-                <TextField fullWidth label='Name' placeholder='Drink 250ml' onChange={handleChange('name')} />
+                <TextField
+                  fullWidth
+                  label='Name'
+                  placeholder={productData && productData.name}
+                  onChange={handleChange('name')}
+                />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -100,7 +119,7 @@ const RegisterPage = () => {
                   minRows={3}
                   label='Description'
                   onChange={handleChange('description')}
-                  placeholder='describe the product'
+                  placeholder={productData && productData.description}
                   sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
                 />
               </Grid>
@@ -109,7 +128,7 @@ const RegisterPage = () => {
                   fullWidth
                   type='Price'
                   label='Price'
-                  placeholder='9999999'
+                  placeholder={productData && productData.price}
                   onChange={handleChange('price')}
                 />
               </Grid>
@@ -134,7 +153,7 @@ const RegisterPage = () => {
                   fullWidth
                   type='Unit Size'
                   label='Unit Size'
-                  placeholder='25'
+                  placeholder={productData && productData.unit_size}
                   onChange={handleChange('unitSize')}
                 />
               </Grid>

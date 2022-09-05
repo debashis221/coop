@@ -14,6 +14,7 @@ import SalesByCountries from 'src/views/dashboard/SalesByCountries'
 import { axiosHelper } from 'src/axios/axios'
 import { getOrders } from 'src/redux/features/orderSlice'
 import { getProducts } from 'src/redux/features/productsSlice'
+import { getSuppliers } from 'src/redux/features/supplierSlice'
 
 const Dashboard = () => {
   const router = useRouter()
@@ -29,6 +30,7 @@ const Dashboard = () => {
     getUsersData()
     getOrderData()
     getProductsData()
+    getSuppliersData()
   }, [user])
   const getUsersData = async () => {
     await axiosHelper
@@ -49,7 +51,11 @@ const Dashboard = () => {
   const getProductsData = async () => {
     await axiosHelper.get('prods').then(res => dispatch(getProducts(res.data)))
   }
-
+  const getSuppliersData = async () => {
+    await axiosHelper.get('/supps').then(res => {
+      dispatch(getSuppliers(res.data))
+    })
+  }
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>

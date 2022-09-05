@@ -20,8 +20,9 @@ import toast, { Toaster } from 'react-hot-toast'
 import TextField from '@mui/material/TextField'
 import { useRouter } from 'next/router'
 import axios from 'axios'
+import { getSuppliers } from 'src/redux/features/supplierSlice'
 
-const TableStickyHeader = ({ columns, rows }) => {
+const TableStickyHeader = ({ columns, rows, route }) => {
   // ** States
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
@@ -36,12 +37,19 @@ const TableStickyHeader = ({ columns, rows }) => {
       dispatch(getUsers(res.data))
     })
   }
+  const getSuppliersData = async () => {
+    await axiosHelper.get('/supps').then(res => {
+      dispatch(getSuppliers(res.data))
+    })
+  }
   const handleDelete = async id => {
     const formData = new FormData()
     formData.append('id', id)
     await axios
       .delete(
-        'http://137.184.215.16:8000/api/v1.0/user',
+        `http://137.184.215.16:8000/api/v1.0/${
+          route == 'updateproduct' ? 'prod' : route == 'updatesupplier' ? 'supp' : route == 'createuser' ? 'user' : ''
+        }`,
         { data: formData },
         {
           headers: {
@@ -54,7 +62,18 @@ const TableStickyHeader = ({ columns, rows }) => {
           toast.error('Something went wrong!')
         } else {
           getUsersData()
-          toast.success('Users Deleted Successfully!')
+          getSuppliersData()
+          toast.success(
+            `${
+              route == 'updateproduct'
+                ? 'Product Deleted Successfully!'
+                : route == 'updatesupplier'
+                ? 'Supplier Deleted Successfully!'
+                : route == 'createuser'
+                ? 'User Deleted Successfully!'
+                : ''
+            }`
+          )
         }
       })
   }
@@ -67,12 +86,12 @@ const TableStickyHeader = ({ columns, rows }) => {
     let result = []
     console.log(value)
     result = rows.filter(data => {
-      return data.phone.search(value) != -1
+      return data.description.search(value) != -1
     })
     setFilterData(result)
   }
   const handleEdit = id => {
-    router.push(`/createuser/${id}`)
+    router.push(`/${route}/${id}`)
   }
   getUsersData()
   return (
@@ -87,7 +106,7 @@ const TableStickyHeader = ({ columns, rows }) => {
                 size='large'
                 variant='contained'
                 sx={{ float: 'right', marginRight: 6, marginTop: 1 }}
-                onClick={() => router.push('/createuser')}
+                onClick={() => router.push(`/${route}`)}
               >
                 <Typography variant='p' color='common.white'>
                   Add
@@ -108,7 +127,7 @@ const TableStickyHeader = ({ columns, rows }) => {
         <Table stickyHeader aria-label='sticky table'>
           <TableHead>
             <TableRow>
-              {columns.map(column => (
+              {columns?.map(column => (
                 <TableCell key={column}>{column}</TableCell>
               ))}
               <TableCell>{'Actions'}</TableCell>
@@ -119,13 +138,14 @@ const TableStickyHeader = ({ columns, rows }) => {
               ? filterData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
                   return (
                     <TableRow hover role='checkbox' tabIndex={-1} key={index}>
-                      {columns.map(column => {
-                        return (
-                          <>
-                            <TableCell key={column}>{row[column]}</TableCell>
-                          </>
-                        )
-                      })}
+                      {columns &&
+                        columns.map(column => {
+                          return (
+                            <>
+                              <TableCell key={column}>{row[column]}</TableCell>
+                            </>
+                          )
+                        })}
                       <TableCell>
                         <Grid container>
                           <Grid item container direction='row'>
@@ -156,16 +176,18 @@ const TableStickyHeader = ({ columns, rows }) => {
                     </TableRow>
                   )
                 })
-              : rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+              : rows &&
+                rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
                   return (
                     <TableRow hover role='checkbox' tabIndex={-1} key={index}>
-                      {columns.map(column => {
-                        return (
-                          <>
-                            <TableCell key={column}>{row[column]}</TableCell>
-                          </>
-                        )
-                      })}
+                      {columns != null &&
+                        columns.map(column => {
+                          return (
+                            <>
+                              <TableCell key={column}>{row[column]}</TableCell>
+                            </>
+                          )
+                        })}
                       <TableCell>
                         <Grid container>
                           <Grid item container direction='row'>
