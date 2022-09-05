@@ -13,6 +13,7 @@ import StatisticsCard from 'src/views/dashboard/StatisticsCard'
 import SalesByCountries from 'src/views/dashboard/SalesByCountries'
 import { axiosHelper } from 'src/axios/axios'
 import { getOrders } from 'src/redux/features/orderSlice'
+import { getProducts } from 'src/redux/features/productsSlice'
 
 const Dashboard = () => {
   const router = useRouter()
@@ -27,16 +28,26 @@ const Dashboard = () => {
     }
     getUsersData()
     getOrderData()
+    getProductsData()
   }, [user])
   const getUsersData = async () => {
-    await axiosHelper.get('/users').then(res => {
-      dispatch(getUsers(res.data))
-    })
+    await axiosHelper
+      .get('/users', {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => {
+        dispatch(getUsers(res.data))
+      })
   }
   const getOrderData = async () => {
     await axiosHelper.get('/orders').then(res => {
       dispatch(getOrders(res.data))
     })
+  }
+  const getProductsData = async () => {
+    await axiosHelper.get('prods').then(res => dispatch(getProducts(res.data)))
   }
 
   return (
@@ -46,7 +57,7 @@ const Dashboard = () => {
           <Trophy users={users} />
         </Grid>
         <Grid item xs={12} md={4}>
-          <StatisticsCard orders={orders}/>
+          <StatisticsCard orders={orders} />
         </Grid>
         <Grid item xs={12} md={4}>
           <SalesByCountries />

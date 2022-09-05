@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // ** MUI Imports
 import Paper from '@mui/material/Paper'
@@ -19,6 +19,7 @@ import { getUsers } from 'src/redux/features/usersSlice'
 import toast, { Toaster } from 'react-hot-toast'
 import TextField from '@mui/material/TextField'
 import { useRouter } from 'next/router'
+import axios from 'axios'
 
 const TableStickyHeader = ({ columns, rows }) => {
   // ** States
@@ -30,7 +31,6 @@ const TableStickyHeader = ({ columns, rows }) => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
   }
-  const rowData = rows
   const getUsersData = async () => {
     await axiosHelper.get('/users').then(res => {
       dispatch(getUsers(res.data))
@@ -39,14 +39,24 @@ const TableStickyHeader = ({ columns, rows }) => {
   const handleDelete = async id => {
     const formData = new FormData()
     formData.append('id', id)
-    await axiosHelper.delete('/user', formData).then(res => {
-      if (res.data) {
-        getUsersData()
-        toast.success('User Deleted Successfully')
-      } else {
-        toast.error('Something weng wromg!')
-      }
-    })
+    await axios
+      .delete(
+        'http://137.184.215.16:8000/api/v1.0/user',
+        { data: formData },
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      )
+      .then(res => {
+        if (res.data.data.status == 'error') {
+          toast.error('Something went wrong!')
+        } else {
+          getUsersData()
+          toast.success('Users Deleted Successfully!')
+        }
+      })
   }
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(+event.target.value)
@@ -61,6 +71,10 @@ const TableStickyHeader = ({ columns, rows }) => {
     })
     setFilterData(result)
   }
+  const handleEdit = id => {
+    router.push(`/createuser/${id}`)
+  }
+  getUsersData()
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <Toaster />
@@ -70,9 +84,9 @@ const TableStickyHeader = ({ columns, rows }) => {
             <Grid item xs={12} sm={6}></Grid>
             <Grid item xs={12} sm={6}>
               <Button
-                size='small'
+                size='large'
                 variant='contained'
-                sx={{ float: 'right', marginRight: 6, marginTop: 3 }}
+                sx={{ float: 'right', marginRight: 6, marginTop: 1 }}
                 onClick={() => router.push('/createuser')}
               >
                 <Typography variant='p' color='common.white'>
@@ -85,7 +99,7 @@ const TableStickyHeader = ({ columns, rows }) => {
                 type='text'
                 onChange={handleSearch()}
                 sx={{ marginBottom: 4, float: 'right', marginRight: 5 }}
-                placeholder='Enter Phone Number'
+                placeholder='Searching for something?'
               />
             </Grid>
           </Grid>
@@ -116,7 +130,7 @@ const TableStickyHeader = ({ columns, rows }) => {
                         <Grid container>
                           <Grid item container direction='row'>
                             <Grid item xs={12} sm={6}>
-                              <Button fullWidth size='small' variant='contained'>
+                              <Button fullWidth size='small' variant='contained' onClick={() => handleEdit(row['id'])}>
                                 <Typography variant='p' color='common.white'>
                                   Edit
                                 </Typography>
@@ -156,7 +170,7 @@ const TableStickyHeader = ({ columns, rows }) => {
                         <Grid container>
                           <Grid item container direction='row'>
                             <Grid item xs={12} sm={6}>
-                              <Button fullWidth size='small' variant='contained'>
+                              <Button fullWidth size='small' variant='contained' onClick={() => handleEdit(row['id'])}>
                                 <Typography variant='p' color='common.white'>
                                   Edit
                                 </Typography>

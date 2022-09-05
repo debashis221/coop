@@ -68,15 +68,21 @@ const LoginPage = () => {
     const push = () => {
       router.push('/')
     }
-    await axiosHelper.post('/user/login', formData).then(res => {
-      if (res.data.token) {
-        dispatch(login(res.data))
-        toast.success(res.data.status)
-        setTimeout(push(), 3000)
-      } else {
-        toast.error(res.data.status)
-      }
-    })
+    await axiosHelper
+      .post('/user/login', formData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => {
+        if (res.data.token) {
+          dispatch(login(res.data))
+          toast.success(res.data.status)
+          setTimeout(push(), 3000)
+        } else {
+          toast.error(res.data.status)
+        }
+      })
   }
 
   const handleChange = prop => event => {

@@ -25,7 +25,7 @@ const navigation = () => {
     {
       title: 'Products',
       icon: FormatLetterCase,
-      path: '/updateproduct'
+      path: '/products'
     },
    
     {

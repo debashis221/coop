@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // ** MUI Components
 import Box from '@mui/material/Box'
@@ -32,7 +32,18 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }))
 
 const RegisterPage = () => {
+  const [userdata, setUserData] = useState(null)
   const router = useRouter()
+  const { id } = router.query
+  const getUserData = async () => {
+    axiosHelper.get(`/user?id=${id}`).then(res => {
+      setUserData(res.data[0])
+    })
+  }
+  useEffect(() => {
+    getUserData()
+    return () => {}
+  }, [id])
   // ** States
   const [values, setValues] = useState({
     password: '',
@@ -49,26 +60,21 @@ const RegisterPage = () => {
 
   const handleSubmit = async () => {
     const formData = new FormData()
-    formData.append('fname', values.fname)
-    formData.append('lname', values.lname)
-    formData.append('email', values.email)
-    formData.append('phone', values.number)
-    formData.append('pass', values.password)
-    formData.append('role', values.role)
-    await axios
-      .post('http://137.184.215.16:8000/api/v1.0/user', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-      .then(res => {
-        if (res.data.status == 'error') {
-          toast.error('Something went wrong! Please Check All The Fields!')
-        } else {
-          toast.success('Users Added Successfully!')
-          router.push('/users')
-        }
-      })
+    formData.append('user_id', 12)
+    formData.append('fname', values.fname != null ? values.fname : userdata.fname)
+    // formData.append('lname', values.lname != null ? values.lname : userdata.lname)
+    // formData.append('email', values.email != null ? values.email : userdata.email)
+    // formData.append('phone', values.number != null ? values.number : userdata.phone)
+    // formData.append('pass', values.password != null ? values.password : userdata.pass)
+    // formData.append('role', values.role != null ? values.role : userdata.role)
+    await axios.put(`http://137.184.215.16:8000/api/v1.0/user`, formData).then(res => {
+      console.log(res.data)
+      if (res.data.data.status == 'error') {
+        toast.error('Something went wrong! Please Check All The Fields!')
+      } else {
+        toast.success('Users Added Successfully!')
+      }
+    })
   }
 
   return (
@@ -80,6 +86,7 @@ const RegisterPage = () => {
       justifyContent='center'
       style={{ minHeight: '100vh' }}
     >
+      <Toaster />
       <Box className='content-center'>
         <Card sx={{ zIndex: 1 }}>
           <CardContent sx={{ padding: theme => `${theme.spacing(12)} !important` }}>
@@ -102,6 +109,7 @@ const RegisterPage = () => {
                 <TextField
                   fullWidth
                   label='First Name'
+                  defaultValue={userdata.fname}
                   placeholder='First Name'
                   onChange={handleChange('fname')}
                   required
@@ -120,6 +128,7 @@ const RegisterPage = () => {
                   label='Last Name'
                   placeholder='Last Name'
                   onChange={handleChange('lname')}
+                  defaultValue={userdata.lname}
                   required
                   InputProps={{
                     startAdornment: (
@@ -137,6 +146,7 @@ const RegisterPage = () => {
                   label='Email'
                   placeholder='Email'
                   onChange={handleChange('email')}
+                  defaultValue={userdata.email}
                   required
                   InputProps={{
                     startAdornment: (
@@ -153,6 +163,7 @@ const RegisterPage = () => {
                   label='Phone No.'
                   placeholder='Phone No'
                   onChange={handleChange('number')}
+                  defaultValue={userdata.phone}
                   required
                   InputProps={{
                     startAdornment: (

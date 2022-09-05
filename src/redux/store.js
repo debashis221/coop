@@ -6,6 +6,7 @@ import thunk from 'redux-thunk'
 import authSlice from './features/authSlice'
 import usersSlice from './features/usersSlice'
 import ordersSlice from './features/orderSlice'
+import productsSlice from './features/productsSlice'
 
 const persistConfig = {
   key: 'root',
@@ -14,7 +15,12 @@ const persistConfig = {
   version: 1,
   storage
 }
-const rootReducer = combineReducers({ auth: authSlice, users: usersSlice, orders: ordersSlice })
+const rootReducer = combineReducers({
+  auth: authSlice,
+  users: usersSlice,
+  orders: ordersSlice,
+  products: productsSlice
+})
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
