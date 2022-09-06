@@ -8,11 +8,14 @@ import { axiosHelper } from 'src/axios/axios'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { getProducts } from 'src/redux/features/productsSlice'
+import { useRouter } from 'next/router'
 
 const MUITable = () => {
   const products = useSelector(state => state.products.products)
   const dispatch = useDispatch()
   const columns = products.length > 0 ? Object.keys(products && products[0]) : null
+  const user = useSelector(state => state.auth)
+  const router = useRouter()
   const rows = []
   products &&
     products.map(item => {
@@ -20,6 +23,9 @@ const MUITable = () => {
     })
   useEffect(() => {
     getProductsData()
+    if (user.user === null) {
+      router.push('/login')
+    }
     return () => {}
   }, [products])
   const getProductsData = async () => {

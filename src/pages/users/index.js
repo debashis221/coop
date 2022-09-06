@@ -8,10 +8,13 @@ import TableStickyHeader from 'src/views/tables/TableStickyHeader'
 import { axiosHelper } from 'src/axios/axios'
 import { useDispatch } from 'react-redux'
 import { getUsers } from 'src/redux/features/usersSlice'
+import { useRouter } from 'next/router'
 
 const MUITable = () => {
+  const router = useRouter()
+  const user = useSelector(state => state.auth.user)
   const users = useSelector(state => state.users.users)
-  const columns = Object.keys(users[0])
+  const columns = users.length > 0 ? Object.keys(users[0]) : null
   const dispatch = useDispatch()
   const rows = []
   users.map(item => {
@@ -19,8 +22,11 @@ const MUITable = () => {
   })
   useEffect(() => {
     getUsersData()
+    if (user == null) {
+      router.push('/login')
+    }
     return () => {}
-  }, [users])
+  }, [])
   const getUsersData = async () => {
     await axiosHelper.get('/users').then(res => {
       dispatch(getUsers(res.data))

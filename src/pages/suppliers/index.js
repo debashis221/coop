@@ -8,10 +8,14 @@ import { axiosHelper } from 'src/axios/axios'
 import { useDispatch } from 'react-redux'
 import { getSuppliers } from 'src/redux/features/supplierSlice'
 import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 const MUITable = () => {
   useEffect(() => {
     getSuppliersData()
+    if (user.user === null) {
+      router.push('/login')
+    }
     return () => {}
   }, [suppliers])
   const getSuppliersData = async () => {
@@ -23,6 +27,8 @@ const MUITable = () => {
   const columns = suppliers.length > 0 ? Object.keys(suppliers[0]) : null
   const dispatch = useDispatch()
   const rows = []
+  const user = useSelector(state => state.auth)
+  const router = useRouter()
   suppliers.map(item => {
     rows.push(item)
   })

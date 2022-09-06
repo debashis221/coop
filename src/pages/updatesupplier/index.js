@@ -16,6 +16,7 @@ import toast from 'react-hot-toast'
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import { useRouter } from 'next/router'
+import { useSelector } from 'react-redux'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -24,13 +25,16 @@ const Card = styled(MuiCard)(({ theme }) => ({
 
 const RegisterPage = () => {
   // ** States
+  const user = useSelector(state => state.auth)
   const router = useRouter()
   const [values, setValues] = useState({
     name: '',
     branchname: '',
     number: ''
   })
-
+  if (user.user === null) {
+    router.push('/login')
+  }
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
   }

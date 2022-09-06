@@ -21,6 +21,7 @@ import TextField from '@mui/material/TextField'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import { getSuppliers } from 'src/redux/features/supplierSlice'
+import { getOrders } from 'src/redux/features/orderSlice'
 
 const TableStickyHeader = ({ columns, rows, route }) => {
   // ** States
@@ -42,13 +43,26 @@ const TableStickyHeader = ({ columns, rows, route }) => {
       dispatch(getSuppliers(res.data))
     })
   }
+  const getSupplierData = async () => {
+    await axiosHelper.get('/orders').then(res => {
+      dispatch(getOrders(res.data))
+    })
+  }
   const handleDelete = async id => {
     const formData = new FormData()
     formData.append('id', id)
     await axios
       .delete(
         `http://137.184.215.16:8000/api/v1.0/${
-          route == 'updateproduct' ? 'prod' : route == 'updatesupplier' ? 'supp' : route == 'createuser' ? 'user' : ''
+          route == 'updateproduct'
+            ? 'prod'
+            : route == 'updatesupplier'
+            ? 'supp'
+            : route == 'createuser'
+            ? 'user'
+            : route == 'updateorder'
+            ? 'order'
+            : ''
         }`,
         { data: formData },
         {
@@ -63,6 +77,7 @@ const TableStickyHeader = ({ columns, rows, route }) => {
         } else {
           getUsersData()
           getSuppliersData()
+          getSupplierData()
           toast.success(
             `${
               route == 'updateproduct'
@@ -71,6 +86,8 @@ const TableStickyHeader = ({ columns, rows, route }) => {
                 ? 'Supplier Deleted Successfully!'
                 : route == 'createuser'
                 ? 'User Deleted Successfully!'
+                : route == 'updateorder'
+                ? 'Order Deleted Successfully!'
                 : ''
             }`
           )
@@ -86,7 +103,7 @@ const TableStickyHeader = ({ columns, rows, route }) => {
     let result = []
     console.log(value)
     result = rows.filter(data => {
-      return data.description.search(value) != -1
+      return data.id.search(value) != -1
     })
     setFilterData(result)
   }

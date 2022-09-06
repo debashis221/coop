@@ -1,61 +1,44 @@
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
-import Link from '@mui/material/Link'
 import Card from '@mui/material/Card'
-import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader'
-
-// ** Demo Components Imports
-import TableBasic from 'src/views/tables/TableBasic'
-import TableDense from 'src/views/tables/TableDense'
-import TableSpanning from 'src/views/tables/TableSpanning'
-import TableCustomized from 'src/views/tables/TableCustomized'
-import TableCollapsible from 'src/views/tables/TableCollapsible'
+import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import TableStickyHeader from 'src/views/tables/TableStickyHeader'
-
+import { getOrders } from 'src/redux/features/orderSlice'
+import { axiosHelper } from 'src/axios/axios'
+import { useRouter } from 'next/router'
 
 const MUITable = () => {
+  const orders = useSelector(state => state.orders.orders)
+  const user = useSelector(state => state.auth)
+  const router = useRouter()
+  const columns = orders.length > 0 ? Object.keys(orders[0]) : null
+  const dispatch = useDispatch()
+  const rows = []
+  orders.map(item => {
+    rows.push(item)
+  })
+  useEffect(() => {
+    getSupplierData()
+    if (user.user === null) {
+      router.push('/login')
+    }
+    return () => {}
+  }, [orders])
+  const getSupplierData = async () => {
+    await axiosHelper.get('/orders').then(res => {
+      dispatch(getOrders(res.data))
+    })
+  }
   return (
-    
     <Grid container spacing={6}>
-     
-      <Grid item xs={12}>
-        {/* <Card>
-          <CardHeader title='Basic Table' titleTypographyProps={{ variant: 'h6' }} />
-          <TableBasic />
-        </Card> */}
-      </Grid>
-      <Grid item xs={12}>
-        {/* <Card>
-          <CardHeader title='Dense Table' titleTypographyProps={{ variant: 'h6' }} />
-          <TableDense />
-        </Card> */}
-      </Grid>
-      <Grid item xs={12}>
-        {/* <Card>
-          <CardHeader title='Users' titleTypographyProps={{ variant: 'h6' }} />
-          <TableStickyHeader />
-        </Card> */}
-      </Grid>
-      <Grid item xs={12}>
-        {/* <Card>
-          <CardHeader title='Collapsible Table' titleTypographyProps={{ variant: 'h6' }} />
-          <TableCollapsible />
-        </Card> */}
-      </Grid>
       <Grid item xs={12}>
         <Card>
           <CardHeader title='Orders' titleTypographyProps={{ variant: 'h6' }} />
-          <TableSpanning />
+          <TableStickyHeader rows={rows} columns={columns} route='updateorder' />
         </Card>
       </Grid>
-      <Grid item xs={12}>
-        {/* <Card>
-          <CardHeader title='Customized Table' titleTypographyProps={{ variant: 'h6' }} />
-          <TableCustomized />
-        </Card> */}
-      </Grid>
-      
     </Grid>
   )
 }

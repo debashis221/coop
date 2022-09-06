@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // ** MUI Components
 import Box from '@mui/material/Box'
@@ -24,6 +24,7 @@ import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import { axiosHelper } from 'src/axios/axios'
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast'
+import { useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 
 // ** Styled Components
@@ -33,6 +34,12 @@ const Card = styled(MuiCard)(({ theme }) => ({
 
 const RegisterPage = () => {
   const router = useRouter()
+  const user = useSelector(state => state.auth)
+  useEffect(() => {
+    if (user.user === null) {
+      router.push('/login')
+    }
+  }, [user])
   // ** States
   const [values, setValues] = useState({
     password: '',

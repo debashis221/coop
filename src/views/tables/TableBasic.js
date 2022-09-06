@@ -1,54 +1,49 @@
-// ** MUI Imports
-import Paper from '@mui/material/Paper'
-import Table from '@mui/material/Table'
+import Table from '@mui/material/Table';
 import TableRow from '@mui/material/TableRow'
 import TableHead from '@mui/material/TableHead'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
+import { useSelector } from 'react-redux'
 
-const createData = (name, calories, fat, carbs, protein) => {
-  return { name, calories, fat, carbs, protein }
-}
+const TableBasic = ({ rows }) => {
+  const totalQuantity = useSelector(state => state.selectedProduct.totalQuantity)
+  const totalPrice = useSelector(state => state.selectedProduct.totalPrice)
 
-const rows = [
-  createData('p1', 3, 5+2.990, ),
-  createData('p2', 5, 3+2.990,),
-  createData('Total', 8, 23.920, ),
-  
-]
-
-const TableBasic = () => {
   return (
-    <TableContainer >
+    <TableContainer>
       <Table sx={{ minWidth: 100 }} aria-label='simple table'>
         <TableHead>
           <TableRow>
             <TableCell>Product</TableCell>
-            <TableCell align='right'>Quantity</TableCell>
-            <TableCell align='right'>Price (g)</TableCell>
-           
+            <TableCell>Quantity</TableCell>
+            <TableCell>Price</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(row => (
-            <TableRow
-              key={row.name}
-              sx={{
-                '&:last-of-type td, &:last-of-type th': {
-                  border: 0
-                }
-              }}
-            >
-              <TableCell component='th' scope='row'>
-                {row.name}
-              </TableCell>
-              <TableCell align='right'>{row.calories}</TableCell>
-              <TableCell align='right'>{row.fat}</TableCell>
-              
-            </TableRow>
-          ))}
+          {rows &&
+            rows.length > 0 &&
+            rows.map(row => (
+              <TableRow key={row.name}>
+                <TableCell component='th' scope='row'>
+                  {row.name}
+                </TableCell>
+                <TableCell component='th' scope='row'>
+                  {row.quantity}
+                </TableCell>
+                <TableCell component='th' scope='row'>
+                  {row.quantity * row.price}
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
+        <TableHead>
+          <TableRow>
+            <TableCell>Total</TableCell>
+            <TableCell>{totalQuantity}</TableCell>
+            <TableCell>{totalPrice}</TableCell>
+          </TableRow>
+        </TableHead>
       </Table>
     </TableContainer>
   )

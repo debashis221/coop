@@ -25,6 +25,7 @@ import { axiosHelper } from 'src/axios/axios'
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast'
 import { useRouter } from 'next/router'
+import { useSelector } from 'react-redux'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -32,6 +33,7 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }))
 
 const RegisterPage = () => {
+  const user = useSelector(state => state.auth)
   const [userdata, setUserData] = useState(null)
   const router = useRouter()
   const { id } = router.query
@@ -42,6 +44,9 @@ const RegisterPage = () => {
   }
   useEffect(() => {
     getUserData()
+    if (user.user === null) {
+      router.push('/login')
+    }
     return () => {}
   }, [id])
   // ** States

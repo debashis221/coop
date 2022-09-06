@@ -15,12 +15,13 @@ import MuiCard from '@mui/material/Card'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import CardActions from '@mui/material/CardActions'
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import axios from 'axios'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
-import router from 'next/router'
+import { useRouter } from 'next/router'
+import { useSelector } from 'react-redux'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -36,8 +37,13 @@ const RegisterPage = () => {
     unit: '',
     unitSize: ''
   })
+  const user = useSelector(state => state.auth)
+  const router = useRouter()
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
+  }
+  if (user.user === null) {
+    router.push('/login')
   }
   const handleSubmit = async () => {
     const formData = new FormData()
