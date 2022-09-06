@@ -17,6 +17,10 @@ import { axiosHelper } from 'src/axios/axios'
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import { useRouter } from 'next/router'
+import InputAdornment from '@mui/material/InputAdornment'
+import AccountOutline from 'mdi-material-ui/AccountOutline'
+import Post from 'mdi-material-ui/Post'
+import Dollar from 'mdi-material-ui/CurrencyUsd'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -99,6 +103,13 @@ const RegisterPage = () => {
                   label='Name'
                   placeholder={supplierData && supplierData.coop}
                   onChange={handleChange('name')}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <AccountOutline />
+                      </InputAdornment>
+                    )
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>

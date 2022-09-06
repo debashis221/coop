@@ -45,7 +45,7 @@ const RegisterPage = () => {
     password: '',
     fname: '',
     lname: '',
-    number: '',
+    phone: '',
     email: '',
     role: '',
     showPassword: false
@@ -55,11 +55,12 @@ const RegisterPage = () => {
   }
 
   const handleSubmit = async () => {
+    console.log(values.phone)
     const formData = new FormData()
     formData.append('fname', values.fname)
     formData.append('lname', values.lname)
     formData.append('email', values.email)
-    formData.append('phone', values.number)
+    formData.append('phone', values.phone)
     formData.append('pass', values.password)
     formData.append('role', values.role)
     await axios
@@ -69,7 +70,8 @@ const RegisterPage = () => {
         }
       })
       .then(res => {
-        if (res.data.status == 'error') {
+        console.log(res.data)
+        if (res.data.data.status == 'error') {
           toast.error('Something went wrong! Please Check All The Fields!')
         } else {
           toast.success('Users Added Successfully!')
@@ -159,7 +161,8 @@ const RegisterPage = () => {
                   fullWidth
                   label='Phone No.'
                   placeholder='Phone No'
-                  onChange={handleChange('number')}
+                  type="number"
+                  onChange={handleChange('phone')}
                   required
                   InputProps={{
                     startAdornment: (

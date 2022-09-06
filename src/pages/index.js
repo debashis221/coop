@@ -21,12 +21,14 @@ const Dashboard = () => {
   const user = useSelector(state => state.auth)
   const users = useSelector(state => state.users.users)
   const orders = useSelector(state => state.orders.orders)
+  const deliveredOrder = orders.filter(item => item.status == 'delivered')
+  console.log(deliveredOrder)
   const dispatch = useDispatch()
+  if (user.user === null) {
+    router.push('/login')
+  }
   useEffect(() => {
     getUsersData()
-    if (user.user === null) {
-      router.push('/login')
-    }
     getUsersData()
     getOrderData()
     getProductsData()
@@ -63,10 +65,10 @@ const Dashboard = () => {
           <Trophy users={users} />
         </Grid>
         <Grid item xs={12} md={4}>
-          <StatisticsCard orders={orders} />
+          <StatisticsCard orders={deliveredOrder} />
         </Grid>
-        <Grid item xs={12} md={4}>
-          <SalesByCountries />
+        <Grid item xs={12} md={4} >
+          <SalesByCountries orders={orders}/>
         </Grid>
       </Grid>
     </ApexChartWrapper>

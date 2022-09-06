@@ -114,6 +114,7 @@ const RegisterPage = () => {
                   fullWidth
                   label='First Name'
                   placeholder={userdata && userdata.fname}
+                  defaultValue={userdata && userdata.fname}
                   onChange={handleChange('fname')}
                   required
                   InputProps={{
@@ -129,7 +130,8 @@ const RegisterPage = () => {
                 <TextField
                   fullWidth
                   label='Last Name'
-                  placeholder={userdata && userdata?.lname}
+                  placeholder={userdata && userdata.lname}
+                  defaultValue={userdata && userdata.lname}
                   onChange={handleChange('lname')}
                   required
                   InputProps={{
@@ -147,6 +149,7 @@ const RegisterPage = () => {
                   type='email'
                   label='Email'
                   placeholder={userdata && userdata?.email}
+                  defaultValue={userdata && userdata?.email}
                   onChange={handleChange('email')}
                   required
                   InputProps={{
@@ -163,6 +166,7 @@ const RegisterPage = () => {
                   fullWidth
                   label='Phone No.'
                   placeholder={userdata && userdata?.phone}
+                  defaultValue={userdata && userdata?.phone}
                   onChange={handleChange('number')}
                   required
                   InputProps={{

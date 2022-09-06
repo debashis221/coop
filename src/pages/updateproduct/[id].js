@@ -18,6 +18,10 @@ import CardActions from '@mui/material/CardActions'
 import toast, { Toaster } from 'react-hot-toast'
 import axios from 'axios'
 import { axiosHelper } from 'src/axios/axios'
+import InputAdornment from '@mui/material/InputAdornment'
+import AccountOutline from 'mdi-material-ui/AccountOutline'
+import Post from 'mdi-material-ui/Post'
+import Dollar from 'mdi-material-ui/CurrencyUsd'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
@@ -112,6 +116,13 @@ const RegisterPage = () => {
                   label='Name'
                   placeholder={productData && productData.name}
                   onChange={handleChange('name')}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <AccountOutline />
+                      </InputAdornment>
+                    )
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -123,6 +134,13 @@ const RegisterPage = () => {
                   onChange={handleChange('description')}
                   placeholder={productData && productData.description}
                   sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <Post />
+                      </InputAdornment>
+                    )
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -132,6 +150,13 @@ const RegisterPage = () => {
                   label='Price'
                   placeholder={productData && productData.price}
                   onChange={handleChange('price')}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <Dollar />
+                      </InputAdornment>
+                    )
+                  }}
                 />
               </Grid>
 
