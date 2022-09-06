@@ -52,15 +52,16 @@ const RegisterPage = () => {
       setProductData(res.data[0])
     })
   }
-
+  console.log(productData)
+  console.log(values)
   const handleSubmit = async () => {
     const formData = new FormData()
     formData.append('id', id)
-    formData.append('name', values.name != null ? values.name : productData.name)
-    formData.append('description', values.description != null ? values.description : productData.description)
-    formData.append('price', values.price != null ? values.price : productData.price)
-    formData.append('unit', values.unit != null ? values.unit : productData.unit)
-    formData.append('unit_size', values.unitSize != null ? values.unitSize : productData.unit_size)
+    formData.append('name', values.name != '' ? values.name : productData.name)
+    formData.append('description', values.description != '' ? values.description : productData.description)
+    formData.append('price', values.price != '' ? values.price : productData.price)
+    formData.append('unit', values.unit != '' ? values.unit : productData.unit)
+    formData.append('unit_size', values.unitSize != '' ? values.unitSize : productData.unit_size)
     await axios
       .put('http://137.184.215.16:8000/api/v1.0/prod', formData, {
         headers: {
@@ -72,7 +73,7 @@ const RegisterPage = () => {
         if (res.data.data.status == 'error') {
           toast.error('Something went wrong! Please Check All The Fields!')
         } else {
-          toast.success('Product Added Successfully!')
+          toast.success('Product Updated Successfully!')
           router.push('/products')
         }
       })
@@ -86,6 +87,7 @@ const RegisterPage = () => {
       justifyContent='center'
       style={{ minHeight: '100vh' }}
     >
+      <Toaster />
       <Box className='content-center'>
         <Card sx={{ zIndex: 1 }}>
           <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
