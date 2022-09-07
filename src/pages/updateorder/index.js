@@ -18,6 +18,7 @@ import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import Modal from '@mui/material/Modal'
+import ReactSelect from 'react-select'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
@@ -211,7 +212,7 @@ const RegisterPage = () => {
                   <Box sx={style}>
                     <Grid item>
                       <FormControl fullWidth sx={{ marginTop: 4 }}>
-                        <Select
+                        {/* <Select
                           label='Product'
                           id='form-layouts-separator-select'
                           labelId='form-layouts-separator-select-label'
@@ -225,18 +226,28 @@ const RegisterPage = () => {
                                 </MenuItem>
                               )
                             })}
-                        </Select>
+                        </Select> */}
+                        <ReactSelect
+                          onChange={e => handleAddProduct(e.value)}
+                          options={
+                            productsData &&
+                            productsData.map(product => ({
+                              value: product,
+                              label: product.name
+                            }))
+                          }
+                        />
                       </FormControl>
                     </Grid>
                     <Grid item>
-                      <TextField
+                      {/* <TextField
                         fullWidth
                         type='text'
                         label='Search for Products'
                         placeholder='Water Bottle'
                         onChange={handleChange('number')}
                         sx={{ marginTop: 5, marginBottom: 4 }}
-                      />
+                      /> */}
                     </Grid>
                     <Grid>{selectedProducts.length > 0 && <ProductTable rows={selectedProducts} />}</Grid>
                     <Grid container spacing={0} direction='column' alignItems='center' justifyContent='center'>
