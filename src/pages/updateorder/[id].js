@@ -121,7 +121,7 @@ const RegisterPage = () => {
         if (res.data.data.status == 'error') {
           toast.error('Something went wrong! Please Check All The Fields!')
         } else {
-          toast.success('Order Added Successfully!')
+          toast.success('Order Updated Successfully!')
           dispatch(resetData())
           router.push('/Order')
         }
