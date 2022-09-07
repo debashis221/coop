@@ -148,7 +148,7 @@ const RegisterPage = () => {
                 <Button size='large' onClick={handleSubmit} type='submit' sx={{ mr: 35 }} variant='contained'>
                   Submit
                 </Button>
-                <Button size='large' variant='contained'>
+                <Button size='large' variant='contained' onClick={()=> router.push("/products")}>
                   Cancel
                 </Button>
               </CardActions>

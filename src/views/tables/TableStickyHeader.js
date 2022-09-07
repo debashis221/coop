@@ -103,7 +103,15 @@ const TableStickyHeader = ({ columns, rows, route }) => {
     let result = []
     console.log(value)
     result = rows.filter(data => {
-      return data.id.search(value) != -1
+      return route == 'createuser'
+        ? data.id.search(value) != -1 || data.email.search(value) != -1 || data.fname.search(value) != -1
+        : route == 'updateproduct'
+        ? data.name.search(value) != -1
+        : route == 'updateorder'
+        ? data.status.search(value) != -1
+        : route == 'updatesupplier'
+        ? data.coop.search(value) != -1
+        : data.id.search(value) != -1
     })
     setFilterData(result)
   }

@@ -64,19 +64,20 @@ const RegisterPage = () => {
   }
   const handleSubmit = async () => {
     const formData = new FormData()
-    formData.append('user_id', 12)
-    formData.append('fname', values.fname != null ? values.fname : userdata.fname)
-    // formData.append('lname', values.lname != null ? values.lname : userdata.lname)
-    // formData.append('email', values.email != null ? values.email : userdata.email)
-    // formData.append('phone', values.number != null ? values.number : userdata.phone)
-    // formData.append('pass', values.password != null ? values.password : userdata.pass)
-    // formData.append('role', values.role != null ? values.role : userdata.role)
+    formData.append('id', id)
+    formData.append('fname', values.fname != '' ? values.fname : userdata.fname)
+    formData.append('lname', values.lname != '' ? values.lname : userdata.lname)
+    formData.append('email', values.email != '' ? values.email : userdata.email)
+    formData.append('phone', values.number != '' ? values.number : userdata.phone)
+    formData.append('pass', values.password != '' ? values.password : userdata.pass)
+    formData.append('role', values.role != '' ? values.role : userdata.role)
     await axios.put(`http://137.184.215.16:8000/api/v1.0/user`, formData).then(res => {
       console.log(res.data)
       if (res.data.data.status == 'error') {
         toast.error('Something went wrong! Please Check All The Fields!')
       } else {
-        toast.success('Users Added Successfully!')
+        toast.success('Users Updated Successfully!')
+        router.push("/users")
       }
     })
   }

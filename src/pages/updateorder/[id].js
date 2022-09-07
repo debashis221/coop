@@ -75,7 +75,7 @@ const RegisterPage = () => {
   }
   const getOrderData = async () => {
     axiosHelper.get(`/order?id=${id}`).then(res => {
-      setOrderData(res.data)
+      setOrderData(res.data[0])
     })
   }
   useEffect(() => {
@@ -87,6 +87,7 @@ const RegisterPage = () => {
   if (user.user === null) {
     router.push('/login')
   }
+  console.log(orderData)
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
   }
@@ -104,9 +105,12 @@ const RegisterPage = () => {
     formData.append('supp_id', values.supp_id)
     formData.append('order_id', id)
     formData.append('updatedby_user_id', '1')
-    formData.append('status', isDelivered ? 'delivered' : '')
+    formData.append('status', isDelivered ? 'delivered' : orderData?.status)
     formData.append('assigned_to_user_id', values.createdby_id)
-    formData.append('purchase_order_no', values.purchase_order_no)
+    formData.append(
+      'purchase_order_no',
+      values.purchase_order_no != '' ? values.purchase_order_no : orderData.purchase_order_no
+    )
     formData.append('products', JSON.stringify(products))
     formData.append('isReviewed', 'Y')
 
@@ -161,7 +165,7 @@ const RegisterPage = () => {
                 <TextField
                   fullWidth
                   label='Purchase Order'
-                  placeholder='1586'
+                  placeholder={orderData?.purchase_order_no}
                   onChange={handleChange('purchase_order_no')}
                   InputProps={{
                     startAdornment: (
