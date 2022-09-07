@@ -19,8 +19,8 @@ import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import { useRouter } from 'next/router'
 import InputAdornment from '@mui/material/InputAdornment'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
-import Post from 'mdi-material-ui/Post'
-import Dollar from 'mdi-material-ui/CurrencyUsd'
+import Branch from 'mdi-material-ui/Tree'
+import Supplier from 'mdi-material-ui/TruckDelivery'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -62,6 +62,7 @@ const RegisterPage = () => {
         }
       })
       .then(res => {
+        console.log(res.data)
         if (res.data.status == 'error') {
           toast.error('Something went wrong! Please Check All The Fields!')
         } else {
@@ -121,6 +122,13 @@ const RegisterPage = () => {
                   placeholder={supplierData && supplierData.coop_branch}
                   onChange={handleChange('branchname')}
                   sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <Branch />
+                      </InputAdornment>
+                    )
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -130,6 +138,13 @@ const RegisterPage = () => {
                   label='Supplier Number'
                   placeholder={supplierData && supplierData.supp_no}
                   onChange={handleChange('number')}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <Supplier />
+                      </InputAdornment>
+                    )
+                  }}
                 />
               </Grid>
 

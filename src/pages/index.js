@@ -21,7 +21,7 @@ const Dashboard = () => {
   const user = useSelector(state => state.auth)
   const users = useSelector(state => state.users.users)
   const orders = useSelector(state => state.orders.orders)
-  const deliveredOrder = orders.filter(item => item.status == 'delivered')
+  const deliveredOrder = orders?.filter(item => item.status == 'delivered')
   console.log(deliveredOrder)
   const dispatch = useDispatch()
   if (user.user === null) {

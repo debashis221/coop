@@ -29,7 +29,7 @@ const Trophy = ({ orders }) => {
   return (
     <Card sx={{ position: 'relative' }}>
       <CardContent>
-        <Typography variant='h6'>{orders.length}</Typography>
+        <Typography variant='h6'>{orders?.length}</Typography>
         <Typography variant='h6'>Orders</Typography>
         <Typography variant='body2' sx={{ letterSpacing: '0.25px' }}></Typography>
 

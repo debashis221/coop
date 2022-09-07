@@ -25,7 +25,8 @@ import Dollar from 'mdi-material-ui/CurrencyUsd'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
-import router from 'next/router'
+import { useRouter } from 'next/router'
+import { useSelector } from 'react-redux'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -33,7 +34,6 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }))
 
 const RegisterPage = () => {
-  const { id } = router.query
   const [productData, setProductData] = useState(null)
   // ** Hook
   const [values, setValues] = useState({
@@ -43,6 +43,12 @@ const RegisterPage = () => {
     unit: '',
     unitSize: ''
   })
+  const router = useRouter()
+  const user = useSelector(state => state.auth)
+  if (user.user.user === null) {
+    router.push('/login')
+  }
+  const { id } = router.query
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
   }
@@ -56,8 +62,6 @@ const RegisterPage = () => {
       setProductData(res.data[0])
     })
   }
-  console.log(productData)
-  console.log(values)
   const handleSubmit = async () => {
     const formData = new FormData()
     formData.append('id', id)

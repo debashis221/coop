@@ -44,11 +44,11 @@ const RegisterPage = () => {
   }
   useEffect(() => {
     getUserData()
-    if (user.user === null) {
-      router.push('/login')
-    }
     return () => {}
   }, [id])
+  if (user.user.user === null) {
+    router.push('/login')
+  }
   // ** States
   const [values, setValues] = useState({
     password: '',

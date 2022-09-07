@@ -12,7 +12,7 @@ import { useRouter } from 'next/router'
 
 const MUITable = () => {
   const router = useRouter()
-  const user = useSelector(state => state.auth.user)
+  const user = useSelector(state => state.auth)
   const users = useSelector(state => state.users.users)
   const columns = users.length > 0 ? Object.keys(users[0]) : null
   const dispatch = useDispatch()
@@ -22,7 +22,8 @@ const MUITable = () => {
   })
   useEffect(() => {
     getUsersData()
-    if (user == null) {
+    if (user.user.user !== null) {
+    } else {
       router.push('/login')
     }
     return () => {}

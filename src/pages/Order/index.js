@@ -21,11 +21,11 @@ const MUITable = () => {
   })
   useEffect(() => {
     getSupplierData()
-    if (user.user === null) {
-      router.push('/login')
-    }
     return () => {}
   }, [orders])
+  if (user.user.user === null) {
+    router.push('/login')
+  }
   const getSupplierData = async () => {
     await axiosHelper.get('/orders').then(res => {
       dispatch(getOrders(res.data))

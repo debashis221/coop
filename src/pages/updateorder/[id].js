@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // ** MUI Components
 import Box from '@mui/material/Box'
@@ -15,9 +15,11 @@ import FormControl from '@mui/material/FormControl'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import InputLabel from '@mui/material/InputLabel'
-import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import Modal from '@mui/material/Modal'
+import ReactSelect from 'react-select'
+import Select from '@mui/material/Select'
+import CheckBox from '@mui/material/Checkbox'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
@@ -26,6 +28,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import TableBasic from 'src/views/tables/TableBasic'
 import ProductTable from 'src/views/tables/productTable'
 import { addProduct, resetData } from 'src/redux/features/selectedProduct'
+import InputAdornment from '@mui/material/InputAdornment'
+import Purchase from 'mdi-material-ui/ReceiptOutline'
+import Number from 'mdi-material-ui/Numeric0Box'
+import { axiosHelper } from 'src/axios/axios'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -44,13 +50,15 @@ const RegisterPage = () => {
   const user = useSelector(state => state.auth)
   const selectedProducts = useSelector(state => state.selectedProduct.selectedProducts)
   const dispatch = useDispatch()
-  const totalPrice = useSelector(state => state.selectedProduct.totalPrice)
+  const { id } = router.query
   const [values, setValues] = useState({
     purchase_order_no: 0,
     supp_id: 0,
     number: 0,
     createdby_id: 0
   })
+  const [isDelivered, setIsDelivered] = useState(false)
+  const [orderData, setOrderData] = useState(null)
   const style = {
     position: 'absolute',
     top: '50%',
@@ -63,6 +71,20 @@ const RegisterPage = () => {
     p: 4
   }
   if (user.user.user === null) {
+    router.push('/login')
+  }
+  const getOrderData = async () => {
+    axiosHelper.get(`/order?id=${id}`).then(res => {
+      setOrderData(res.data)
+    })
+  }
+  useEffect(() => {
+    getOrderData()
+    return () => {
+      setOrderData([])
+    }
+  }, [id])
+  if (user.user === null) {
     router.push('/login')
   }
   const handleChange = prop => event => {
@@ -80,12 +102,16 @@ const RegisterPage = () => {
     })
     const formData = new FormData()
     formData.append('supp_id', values.supp_id)
-    formData.append('createdby_id', values.createdby_id)
+    formData.append('order_id', id)
+    formData.append('updatedby_user_id', '1')
+    formData.append('status', isDelivered ? 'delivered' : '')
+    formData.append('assigned_to_user_id', values.createdby_id)
     formData.append('purchase_order_no', values.purchase_order_no)
     formData.append('products', JSON.stringify(products))
+    formData.append('isReviewed', 'Y')
 
     await axios
-      .post('http://137.184.215.16:8000/api/v1.0/order', formData, {
+      .put('http://137.184.215.16:8000/api/v1.0/order', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -137,6 +163,13 @@ const RegisterPage = () => {
                   label='Purchase Order'
                   placeholder='1586'
                   onChange={handleChange('purchase_order_no')}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <Purchase />
+                      </InputAdornment>
+                    )
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -168,6 +201,13 @@ const RegisterPage = () => {
                   label='Supplier Number'
                   placeholder='9999999'
                   onChange={handleChange('number')}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <Number />
+                      </InputAdornment>
+                    )
+                  }}
                 />
               </Grid>
               <Grid container>
@@ -211,7 +251,17 @@ const RegisterPage = () => {
                   <Box sx={style}>
                     <Grid item>
                       <FormControl fullWidth sx={{ marginTop: 4 }}>
-                        <Select
+                        <ReactSelect
+                          onChange={e => handleAddProduct(e.value)}
+                          options={
+                            productsData &&
+                            productsData.map(product => ({
+                              value: product,
+                              label: product.name
+                            }))
+                          }
+                        />
+                        {/* <Select
                           label='Product'
                           id='form-layouts-separator-select'
                           labelId='form-layouts-separator-select-label'
@@ -225,10 +275,10 @@ const RegisterPage = () => {
                                 </MenuItem>
                               )
                             })}
-                        </Select>
+                        </Select> */}
                       </FormControl>
                     </Grid>
-                    <Grid item>
+                    {/* <Grid item>
                       <TextField
                         fullWidth
                         type='text'
@@ -237,7 +287,7 @@ const RegisterPage = () => {
                         onChange={handleChange('number')}
                         sx={{ marginTop: 5, marginBottom: 4 }}
                       />
-                    </Grid>
+                    </Grid> */}
                     <Grid>{selectedProducts.length > 0 && <ProductTable rows={selectedProducts} />}</Grid>
                     <Grid container spacing={0} direction='column' alignItems='center' justifyContent='center'>
                       <CardActions>
@@ -259,7 +309,16 @@ const RegisterPage = () => {
                 </Typography>
                 {selectedProducts.length > 0 && <TableBasic rows={selectedProducts} />}
               </Grid>
-
+              <Grid container sx={{ marginLeft: 5 }}>
+                <Grid item container direction='row'>
+                  <Grid item xs={3} sm={1.5}>
+                    <CheckBox onChange={() => setIsDelivered(true)} />
+                  </Grid>
+                  <Grid item xs={3} sm={2} sx={{ marginTop: 2 }}>
+                    <Typography variant='span'>Delivered</Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
               <CardActions>
                 <Button size='large' type='submit' sx={{ mr: 35 }} variant='contained' onClick={handleSubmit}>
                   Submit

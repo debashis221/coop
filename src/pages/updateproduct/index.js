@@ -42,7 +42,7 @@ const RegisterPage = () => {
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
   }
-  if (user.user === null) {
+  if (user.user.user === null) {
     router.push('/login')
   }
   const handleSubmit = async () => {

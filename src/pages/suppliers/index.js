@@ -11,13 +11,6 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 const MUITable = () => {
-  useEffect(() => {
-    getSuppliersData()
-    if (user.user === null) {
-      router.push('/login')
-    }
-    return () => {}
-  }, [suppliers])
   const getSuppliersData = async () => {
     await axiosHelper.get('/supps').then(res => {
       dispatch(getSuppliers(res.data))
@@ -32,6 +25,13 @@ const MUITable = () => {
   suppliers.map(item => {
     rows.push(item)
   })
+  if (user.user.user === null) {
+    router.push('/login')
+  }
+  useEffect(() => {
+    getSuppliersData()
+    return () => {}
+  }, [suppliers])
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>

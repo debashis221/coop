@@ -36,7 +36,7 @@ const RegisterPage = () => {
   const router = useRouter()
   const user = useSelector(state => state.auth)
   useEffect(() => {
-    if (user.user === null) {
+    if (user.user.user === null) {
       router.push('/login')
     }
   }, [user])

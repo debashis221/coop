@@ -32,7 +32,7 @@ const RegisterPage = () => {
     branchname: '',
     number: ''
   })
-  if (user.user === null) {
+  if (user.user.user === null) {
     router.push('/login')
   }
   const handleChange = prop => event => {
