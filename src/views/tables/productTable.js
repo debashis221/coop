@@ -12,7 +12,14 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { useDispatch, useSelector } from 'react-redux'
-import { setTotalPrice, setTotalQuantity, removeProduct, updateQuantity } from 'src/redux/features/selectedProduct'
+import {
+  setTotalPrice,
+  setTotalQuantity,
+  removeProduct,
+  updateQuantity,
+  updateFreeQuantity,
+  setTotalFreeQuantity
+} from 'src/redux/features/selectedProduct'
 import { useState, useEffect } from 'react'
 
 const ProductTable = ({ rows }) => {
@@ -24,11 +31,17 @@ const ProductTable = ({ rows }) => {
     const quantityData = { data, id }
     dispatch(updateQuantity(quantityData))
   }
+  const handleFreeQuantity = (data, id) => {
+    const freeQuantity = { data, id }
+    dispatch(updateFreeQuantity(freeQuantity))
+  }
   useEffect(() => {
     dispatch(setTotalPrice(rows))
     dispatch(setTotalQuantity(rows))
+    dispatch(setTotalFreeQuantity(rows))
   }, [rows])
   const totalQuantity = useSelector(state => state.selectedProduct.totalQuantity)
+  const totalFreeQuantity = useSelector(state => state.selectedProduct.totalFreeQuantity)
   const totalPrice = useSelector(state => state.selectedProduct.totalPrice)
   return (
     <>
@@ -75,7 +88,12 @@ const ProductTable = ({ rows }) => {
                     />
                   </TableCell>
                   <TableCell component='th' scope='row'>
-                    <TextField type='text' sx={{ width: 100 }} />
+                    <TextField
+                      type='text'
+                      sx={{ width: 100 }}
+                      defaultValue={row.freeQuantity}
+                      onChange={e => handleFreeQuantity(e.target.value, row.id)}
+                    />
                   </TableCell>
                   <TableCell component='th' scope='row'>
                     {row.quantity * row.price}
@@ -90,13 +108,12 @@ const ProductTable = ({ rows }) => {
               <TableCell></TableCell>
               <TableCell></TableCell>
               <TableCell>{totalQuantity}</TableCell>
-              <TableCell>Free Quantity</TableCell>
+              <TableCell>{totalFreeQuantity}</TableCell>
               <TableCell>{totalPrice}</TableCell>
             </TableRow>
           </TableHead>
         </Table>
       </TableContainer>
-      
     </>
   )
 }

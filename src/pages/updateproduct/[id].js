@@ -176,6 +176,9 @@ const RegisterPage = () => {
                   >
                     <MenuItem value='KG'>KG</MenuItem>
                     <MenuItem value='LB'>LB</MenuItem>
+                    <MenuItem value='Dozen'>Dozen</MenuItem>
+                    <MenuItem value='Box'>Box</MenuItem>
+                    <MenuItem value='Piece'>Piece</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -192,7 +195,7 @@ const RegisterPage = () => {
                 <Button size='large' onClick={handleSubmit} type='submit' sx={{ mr: 35 }} variant='contained'>
                   Submit
                 </Button>
-                <Button size='large' variant='contained' onClick={()=> router.push("/products")}>
+                <Button size='large' variant='contained' onClick={() => router.push('/products')}>
                   Cancel
                 </Button>
               </CardActions>

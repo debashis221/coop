@@ -2,14 +2,15 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   selectedProducts: [],
   totalQuantity: 0,
-  totalPrice: 0
+  totalPrice: 0,
+  totalFreeQuantity: 0
 }
 export const selectedProductSlice = createSlice({
   name: 'selectedProducts',
   initialState,
   reducers: {
     addProduct: (state, action) => {
-      const tempProduct = { ...action.payload, quantity: 1 }
+      const tempProduct = { ...action.payload, quantity: 1, freeQuantity: 1 }
       state.selectedProducts.push(tempProduct)
     },
     removeProduct: (state, action) => {
@@ -22,8 +23,18 @@ export const selectedProductSlice = createSlice({
         }
       })
     },
+    updateFreeQuantity: (state, action) => {
+      state.selectedProducts.forEach(item => {
+        if (item.id == action.payload.id) {
+          item.freeQuantity = action.payload.data
+        }
+      })
+    },
     setTotalQuantity: (state, action) => {
       state.totalQuantity = action.payload.reduce((total, item) => parseInt(item.quantity) + total, 0)
+    },
+    setTotalFreeQuantity: (state, action) => {
+      state.totalFreeQuantity = action.payload.reduce((total, item) => parseInt(item.freeQuantity) + total, 0)
     },
     setTotalPrice: (state, action) => {
       state.totalPrice = action.payload.reduce((sum, i) => {
@@ -38,7 +49,15 @@ export const selectedProductSlice = createSlice({
   }
 })
 
-export const { addProduct, removeProduct, updateQuantity, setTotalQuantity, setTotalPrice, resetData } =
-  selectedProductSlice.actions
+export const {
+  addProduct,
+  removeProduct,
+  updateQuantity,
+  setTotalQuantity,
+  setTotalPrice,
+  resetData,
+  updateFreeQuantity,
+  setTotalFreeQuantity
+} = selectedProductSlice.actions
 
 export default selectedProductSlice.reducer

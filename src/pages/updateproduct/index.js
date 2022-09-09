@@ -132,6 +132,9 @@ const RegisterPage = () => {
                   >
                     <MenuItem value='KG'>KG</MenuItem>
                     <MenuItem value='LB'>LB</MenuItem>
+                    <MenuItem value='Dozen'>Dozen</MenuItem>
+                    <MenuItem value='Box'>Box</MenuItem>
+                    <MenuItem value='Piece'>Piece</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>

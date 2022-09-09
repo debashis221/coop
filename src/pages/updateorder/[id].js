@@ -53,12 +53,12 @@ const RegisterPage = () => {
   const { id } = router.query
   const [values, setValues] = useState({
     purchase_order_no: 0,
-    supp_id: 0,
     number: 0,
     createdby_id: 0
   })
   const [isDelivered, setIsDelivered] = useState(false)
   const [orderData, setOrderData] = useState(null)
+  const [supplierNumber, setSupplierNumber] = useState(null)
   const style = {
     position: 'absolute',
     top: '50%',
@@ -87,10 +87,10 @@ const RegisterPage = () => {
   if (user.user === null) {
     router.push('/login')
   }
-  console.log(orderData)
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
   }
+
   const handleSubmit = async () => {
     const products = []
     selectedProducts.map(item => {
@@ -102,7 +102,7 @@ const RegisterPage = () => {
       })
     })
     const formData = new FormData()
-    formData.append('supp_id', values.supp_id)
+    formData.append('supp_id', supplierNumber)
     formData.append('order_id', id)
     formData.append('updatedby_user_id', '1')
     formData.append('status', isDelivered ? 'delivered' : orderData?.status)
@@ -165,7 +165,7 @@ const RegisterPage = () => {
                 <TextField
                   fullWidth
                   label='Purchase Order'
-                  placeholder={orderData?.purchase_order_no}
+                  defaultValue={orderData?.purchase_order_no}
                   onChange={handleChange('purchase_order_no')}
                   InputProps={{
                     startAdornment: (
@@ -190,7 +190,7 @@ const RegisterPage = () => {
                     {supplierData &&
                       supplierData.map((item, index) => {
                         return (
-                          <MenuItem value={item.id} key={index}>
+                          <MenuItem value={item.id} key={index} onClick={() => setSupplierNumber(item.supp_no)}>
                             {item.coop}
                           </MenuItem>
                         )
@@ -203,8 +203,7 @@ const RegisterPage = () => {
                   fullWidth
                   type='Number'
                   label='Supplier Number'
-                  placeholder='9999999'
-                  onChange={handleChange('number')}
+                  value={supplierNumber}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position='start'>
@@ -265,33 +264,9 @@ const RegisterPage = () => {
                             }))
                           }
                         />
-                        {/* <Select
-                          label='Product'
-                          id='form-layouts-separator-select'
-                          labelId='form-layouts-separator-select-label'
-                          required
-                        >
-                          {productsData &&
-                            productsData.map((item, index) => {
-                              return (
-                                <MenuItem value={item.id} key={index} onClick={() => handleAddProduct(item)}>
-                                  {item.name}
-                                </MenuItem>
-                              )
-                            })}
-                        </Select> */}
                       </FormControl>
                     </Grid>
-                    {/* <Grid item>
-                      <TextField
-                        fullWidth
-                        type='text'
-                        label='Search for Products'
-                        placeholder='Water Bottle'
-                        onChange={handleChange('number')}
-                        sx={{ marginTop: 5, marginBottom: 4 }}
-                      />
-                    </Grid> */}
+
                     <Grid>{selectedProducts.length > 0 && <ProductTable rows={selectedProducts} />}</Grid>
                     <Grid container spacing={0} direction='column' alignItems='center' justifyContent='center'>
                       <CardActions>
@@ -316,7 +291,12 @@ const RegisterPage = () => {
               <Grid container sx={{ marginLeft: 5 }}>
                 <Grid item container direction='row'>
                   <Grid item xs={3} sm={1.5}>
-                    <CheckBox onChange={() => setIsDelivered(true)} />
+                    {console.log(orderData?.status)}
+                    {orderData && orderData.status == 'delivered' ? (
+                      <CheckBox onChange={() => setIsDelivered(!isDelivered)} defaultChecked={true} />
+                    ) : (
+                      <CheckBox onChange={() => setIsDelivered(!isDelivered)} defaultChecked={false} />
+                    )}
                   </Grid>
                   <Grid item xs={3} sm={2} sx={{ marginTop: 2 }}>
                     <Typography variant='span'>Delivered</Typography>
