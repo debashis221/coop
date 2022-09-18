@@ -77,7 +77,7 @@ const RegisterPage = () => {
         toast.error('Something went wrong! Please Check All The Fields!')
       } else {
         toast.success('Users Updated Successfully!')
-        router.push("/users")
+        router.push('/users')
       }
     })
   }
@@ -111,73 +111,77 @@ const RegisterPage = () => {
 
             <Grid container spacing={5}>
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label='First Name'
-                  placeholder={userdata && userdata.fname}
-                  defaultValue={userdata && userdata.fname}
-                  onChange={handleChange('fname')}
-                  required
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position='start'>
-                        <AccountOutline />
-                      </InputAdornment>
-                    )
-                  }}
-                />
+                {userdata && (
+                  <TextField
+                    fullWidth
+                    label='First Name'
+                    defaultValue={userdata && userdata.fname}
+                    onChange={handleChange('fname')}
+                    required
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          <AccountOutline />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                )}
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label='Last Name'
-                  placeholder={userdata && userdata.lname}
-                  defaultValue={userdata && userdata.lname}
-                  onChange={handleChange('lname')}
-                  required
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position='start'>
-                        <AccountOutline />
-                      </InputAdornment>
-                    )
-                  }}
-                />
+                {userdata && (
+                  <TextField
+                    fullWidth
+                    label='Last Name'
+                    defaultValue={userdata && userdata.lname}
+                    onChange={handleChange('lname')}
+                    required
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          <AccountOutline />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                )}
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  type='email'
-                  label='Email'
-                  placeholder={userdata && userdata?.email}
-                  defaultValue={userdata && userdata?.email}
-                  onChange={handleChange('email')}
-                  required
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position='start'>
-                        <EmailOutline />
-                      </InputAdornment>
-                    )
-                  }}
-                />
+                {userdata && (
+                  <TextField
+                    fullWidth
+                    type='email'
+                    label='Email'
+                    defaultValue={userdata && userdata?.email}
+                    onChange={handleChange('email')}
+                    required
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          <EmailOutline />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                )}
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label='Phone No.'
-                  placeholder={userdata && userdata?.phone}
-                  defaultValue={userdata && userdata?.phone}
-                  onChange={handleChange('number')}
-                  required
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position='start'>
-                        <Phone />
-                      </InputAdornment>
-                    )
-                  }}
-                />
+                {userdata && (
+                  <TextField
+                    fullWidth
+                    label='Phone No.'
+                    defaultValue={userdata && userdata?.phone}
+                    onChange={handleChange('number')}
+                    required
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          <Phone />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                )}
               </Grid>
               <Grid item xs={12}>
                 <TextField

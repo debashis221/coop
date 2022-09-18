@@ -99,60 +99,66 @@ const RegisterPage = () => {
 
             <Grid container spacing={5}>
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label='Name'
-                  placeholder={supplierData && supplierData.coop}
-                  onChange={handleChange('name')}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position='start'>
-                        <AccountOutline />
-                      </InputAdornment>
-                    )
-                  }}
-                />
+                {supplierData && (
+                  <TextField
+                    fullWidth
+                    label='Name'
+                    defaultValue={supplierData && supplierData.coop}
+                    onChange={handleChange('name')}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          <AccountOutline />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                )}
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  multiline
-                  minRows={3}
-                  label='Branch Name'
-                  placeholder={supplierData && supplierData.coop_branch}
-                  onChange={handleChange('branchname')}
-                  sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position='start'>
-                        <Branch />
-                      </InputAdornment>
-                    )
-                  }}
-                />
+                {supplierData && (
+                  <TextField
+                    fullWidth
+                    multiline
+                    minRows={3}
+                    label='Branch Name'
+                    defaultValue={supplierData && supplierData.coop_branch}
+                    onChange={handleChange('branchname')}
+                    sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          <Branch />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                )}
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  type='Number'
-                  label='Supplier Number'
-                  placeholder={supplierData && supplierData.supp_no}
-                  onChange={handleChange('number')}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position='start'>
-                        <Supplier />
-                      </InputAdornment>
-                    )
-                  }}
-                />
+                {supplierData && (
+                  <TextField
+                    fullWidth
+                    type='number'
+                    label='Supplier Number'
+                    defaultValue={supplierData && supplierData.supp_no}
+                    onChange={handleChange('number')}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          <Supplier />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                )}
               </Grid>
 
               <CardActions>
                 <Button size='large' type='submit' sx={{ mr: 35 }} variant='contained' onClick={handleSubmit}>
                   Submit
                 </Button>
-                <Button size='large' variant='contained' onClick={()=> router.push("/suppliers")}>
+                <Button size='large' variant='contained' onClick={() => router.push('/suppliers')}>
                   Cancel
                 </Button>
               </CardActions>

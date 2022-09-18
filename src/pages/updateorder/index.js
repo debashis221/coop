@@ -26,6 +26,8 @@ import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
 import TableBasic from 'src/views/tables/TableBasic'
 import ProductTable from 'src/views/tables/productTable'
+import InputAdornment from '@mui/material/InputAdornment'
+import Number from 'mdi-material-ui/Numeric0Box'
 import { addProduct, resetData } from 'src/redux/features/selectedProduct'
 
 // ** Styled Components
@@ -46,12 +48,14 @@ const RegisterPage = () => {
   const selectedProducts = useSelector(state => state.selectedProduct.selectedProducts)
   const dispatch = useDispatch()
   const totalPrice = useSelector(state => state.selectedProduct.totalPrice)
+
   const [values, setValues] = useState({
     purchase_order_no: 0,
     supp_id: 0,
     number: 0,
     createdby_id: 0
   })
+  const [supplierNumber, setSupplierNumber] = useState('')
   const style = {
     position: 'absolute',
     top: '50%',
@@ -81,7 +85,7 @@ const RegisterPage = () => {
     })
     const formData = new FormData()
     formData.append('supp_id', values.supp_id)
-    formData.append('createdby_id', values.createdby_id)
+    formData.append('createdby_id', user.user.user[0].id)
     formData.append('purchase_order_no', values.purchase_order_no)
     formData.append('products', JSON.stringify(products))
 
@@ -102,6 +106,7 @@ const RegisterPage = () => {
         }
       })
   }
+  console.log(supplierNumber)
   const handleAddProduct = item => {
     dispatch(addProduct(item))
   }
@@ -154,7 +159,7 @@ const RegisterPage = () => {
                     {supplierData &&
                       supplierData.map((item, index) => {
                         return (
-                          <MenuItem value={item.id} key={index}>
+                          <MenuItem value={item.id} key={index} onClick={() => setSupplierNumber(item.supp_no)}>
                             {item.coop}
                           </MenuItem>
                         )
@@ -165,10 +170,16 @@ const RegisterPage = () => {
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  type='Number'
+                  type='text'
                   label='Supplier Number'
-                  placeholder='9999999'
-                  onChange={handleChange('number')}
+                  value={supplierNumber}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <Number />
+                      </InputAdornment>
+                    )
+                  }}
                 />
               </Grid>
               <Grid container>

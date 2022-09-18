@@ -55,7 +55,7 @@ const RegisterPage = () => {
   useEffect(() => {
     getProductData()
     return () => {}
-  }, [])
+  }, [id])
 
   const getProductData = async () => {
     axiosHelper.get(`/prod?id=${id}`).then(res => {
@@ -115,53 +115,59 @@ const RegisterPage = () => {
 
             <Grid container spacing={5}>
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label='Name'
-                  placeholder={productData && productData.name}
-                  onChange={handleChange('name')}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position='start'>
-                        <AccountOutline />
-                      </InputAdornment>
-                    )
-                  }}
-                />
+                {productData && (
+                  <TextField
+                    fullWidth
+                    label='Name'
+                    defaultValue={`${productData && productData.name}`}
+                    onChange={handleChange('name')}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          <AccountOutline />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                )}
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  multiline
-                  minRows={3}
-                  label='Description'
-                  onChange={handleChange('description')}
-                  placeholder={productData && productData.description}
-                  sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position='start'>
-                        <Post />
-                      </InputAdornment>
-                    )
-                  }}
-                />
+                {productData && (
+                  <TextField
+                    fullWidth
+                    multiline
+                    minRows={3}
+                    label='Description'
+                    onChange={handleChange('description')}
+                    defaultValue={productData && productData.description}
+                    sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          <Post />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                )}
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  type='Price'
-                  label='Price'
-                  placeholder={productData && productData.price}
-                  onChange={handleChange('price')}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position='start'>
-                        <Dollar />
-                      </InputAdornment>
-                    )
-                  }}
-                />
+                {productData && (
+                  <TextField
+                    fullWidth
+                    type='Price'
+                    label='Price'
+                    defaultValue={productData && productData.price}
+                    onChange={handleChange('price')}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          <Dollar />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                )}
               </Grid>
 
               <Grid item xs={12} sm={12}>
@@ -183,13 +189,15 @@ const RegisterPage = () => {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  type='Unit Size'
-                  label='Unit Size'
-                  placeholder={productData && productData.unit_size}
-                  onChange={handleChange('unitSize')}
-                />
+                {productData && (
+                  <TextField
+                    fullWidth
+                    type='Unit Size'
+                    label='Unit Size'
+                    defaultValue={productData && productData.unit_size}
+                    onChange={handleChange('unitSize')}
+                  />
+                )}
               </Grid>
               <CardActions>
                 <Button size='large' onClick={handleSubmit} type='submit' sx={{ mr: 35 }} variant='contained'>

@@ -59,6 +59,7 @@ const RegisterPage = () => {
   const [isDelivered, setIsDelivered] = useState(false)
   const [orderData, setOrderData] = useState(null)
   const [supplierNumber, setSupplierNumber] = useState(null)
+  const [purchaseOrder, SetPurchaseOrder] = useState(null)
   const style = {
     position: 'absolute',
     top: '50%',
@@ -76,6 +77,7 @@ const RegisterPage = () => {
   const getOrderData = async () => {
     axiosHelper.get(`/order?id=${id}`).then(res => {
       setOrderData(res.data[0])
+      SetPurchaseOrder(res.data[0]?.purchase_order_no)
     })
   }
   useEffect(() => {
@@ -90,7 +92,6 @@ const RegisterPage = () => {
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
   }
-
   const handleSubmit = async () => {
     const products = []
     selectedProducts.map(item => {
@@ -104,7 +105,7 @@ const RegisterPage = () => {
     const formData = new FormData()
     formData.append('supp_id', supplierNumber)
     formData.append('order_id', id)
-    formData.append('updatedby_user_id', '1')
+    formData.append('updatedby_user_id', user.user.user[0].id)
     formData.append('status', isDelivered ? 'delivered' : orderData?.status)
     formData.append('assigned_to_user_id', values.createdby_id)
     formData.append(
@@ -162,19 +163,21 @@ const RegisterPage = () => {
 
             <Grid container spacing={5}>
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label='Purchase Order'
-                  defaultValue={orderData?.purchase_order_no}
-                  onChange={handleChange('purchase_order_no')}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position='start'>
-                        <Purchase />
-                      </InputAdornment>
-                    )
-                  }}
-                />
+                {orderData && (
+                  <TextField
+                    fullWidth
+                    label='Purchase Order'
+                    defaultValue={`${orderData?.purchase_order_no}`}
+                    onChange={handleChange('purchase_order_no')}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position='start'>
+                          <Purchase />
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                )}
               </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth>
