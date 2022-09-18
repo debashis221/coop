@@ -53,7 +53,8 @@ const RegisterPage = () => {
     purchase_order_no: 0,
     supp_id: 0,
     number: 0,
-    createdby_id: 0
+    createdby_id: 0,
+    assigned_to_user_id: 0
   })
   const [supplierNumber, setSupplierNumber] = useState('')
   const style = {
@@ -87,6 +88,7 @@ const RegisterPage = () => {
     formData.append('supp_id', values.supp_id)
     formData.append('createdby_id', user.user.user[0].id)
     formData.append('purchase_order_no', values.purchase_order_no)
+    formData.append('assigned_to_user_id', values.assigned_to_user_id)
     formData.append('products', JSON.stringify(products))
 
     await axios
@@ -197,7 +199,7 @@ const RegisterPage = () => {
                       <Select
                         label='Assignee'
                         defaultValue=''
-                        onChange={handleChange('createdby_id')}
+                        onChange={handleChange('assigned_to_user_id')}
                         id='form-layouts-separator-select'
                         labelId='form-layouts-separator-select-label'
                         required

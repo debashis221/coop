@@ -54,7 +54,8 @@ const RegisterPage = () => {
   const [values, setValues] = useState({
     purchase_order_no: 0,
     number: 0,
-    createdby_id: 0
+    createdby_id: 0,
+    assigned_to_user_id: 0
   })
   const [isDelivered, setIsDelivered] = useState(false)
   const [orderData, setOrderData] = useState(null)
@@ -107,7 +108,7 @@ const RegisterPage = () => {
     formData.append('order_id', id)
     formData.append('updatedby_user_id', user.user.user[0].id)
     formData.append('status', isDelivered ? 'delivered' : orderData?.status)
-    formData.append('assigned_to_user_id', values.createdby_id)
+    formData.append('assigned_to_user_id', values.assigned_to_user_id)
     formData.append(
       'purchase_order_no',
       values.purchase_order_no != '' ? values.purchase_order_no : orderData.purchase_order_no
@@ -231,7 +232,7 @@ const RegisterPage = () => {
                       <Select
                         label='Assignee'
                         defaultValue=''
-                        onChange={handleChange('createdby_id')}
+                        onChange={handleChange('assigned_to_user_id')}
                         id='form-layouts-separator-select'
                         labelId='form-layouts-separator-select-label'
                         required
