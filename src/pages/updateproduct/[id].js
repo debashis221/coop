@@ -169,7 +169,20 @@ const RegisterPage = () => {
                   />
                 )}
               </Grid>
-
+              <Grid item xs={12}>
+                {productData && (
+                  <TextField
+                    fullWidth
+                    type='Unit'
+                    label='Unit'
+                    defaultValue={productData && productData.unit}
+                    onChange={handleChange('unit')}
+                 
+                  />
+                )}
+              </Grid>
+              
+{/* 
               <Grid item xs={12} sm={12}>
                 <FormControl fullWidth>
                   <InputLabel id='form-layouts-separator-select-label'>Unit</InputLabel>
@@ -187,7 +200,9 @@ const RegisterPage = () => {
                     <MenuItem value='Piece'>Piece</MenuItem>
                   </Select>
                 </FormControl>
-              </Grid>
+              </Grid> */}
+
+
               <Grid item xs={12}>
                 {productData && (
                   <TextField
