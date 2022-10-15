@@ -32,6 +32,7 @@ import InputAdornment from '@mui/material/InputAdornment'
 import Purchase from 'mdi-material-ui/ReceiptOutline'
 import Number from 'mdi-material-ui/Numeric0Box'
 import { axiosHelper } from 'src/axios/axios'
+import EditTable from 'src/views/tables/editTable'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -79,6 +80,9 @@ const RegisterPage = () => {
     axiosHelper.get(`/order?id=${id}`).then(res => {
       setOrderData(res.data[0])
       SetPurchaseOrder(res.data[0]?.purchase_order_no)
+      res.data[0]?.products?.map(item => {
+        dispatch(addProduct(item))
+      })
     })
   }
   useEffect(() => {
@@ -90,6 +94,7 @@ const RegisterPage = () => {
   if (user.user === null) {
     router.push('/login')
   }
+
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value })
   }
@@ -136,6 +141,7 @@ const RegisterPage = () => {
   const handleAddProduct = item => {
     dispatch(addProduct(item))
   }
+
   return (
     <Grid
       container
@@ -290,6 +296,7 @@ const RegisterPage = () => {
                 <Typography variant='span' sx={{ paddingLeft: 5 }}>
                   Product Summary
                 </Typography>
+                {console.log(orderData?.products)}
                 {selectedProducts.length > 0 && <TableBasic rows={selectedProducts} />}
               </Grid>
               <Grid container sx={{ marginLeft: 5 }}>
