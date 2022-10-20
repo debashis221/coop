@@ -1,7 +1,4 @@
 // ** MUI Imports
-import Paper from '@mui/material/Paper'
-import Grid from '@mui/material/Grid'
-import CardActions from '@mui/material/CardActions'
 import Table from '@mui/material/Table'
 import TableRow from '@mui/material/TableRow'
 import TableHead from '@mui/material/TableHead'
@@ -45,17 +42,17 @@ const ProductTable = ({ rows }) => {
   const totalPrice = useSelector(state => state.selectedProduct.totalPrice)
   return (
     <>
-      <TableContainer>
-        <Table sx={{ minWidth: 100 }} aria-label='simple table'>
+      <TableContainer sx={{ maxHeight: 440 }}>
+        <Table aria-label='sticky table'>
           <TableHead>
             <TableRow>
-              <TableCell></TableCell>
-              <TableCell>#</TableCell>
-              <TableCell>Product</TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>Quantity</TableCell>
-              <TableCell>Free Quantity</TableCell>
-              <TableCell>Total Per Q</TableCell>
+              <TableCell numeric></TableCell>
+              <TableCell numeric>#</TableCell>
+              <TableCell numeric>Product</TableCell>
+              <TableCell numeric>Price</TableCell>
+              <TableCell numeric>Quantity</TableCell>
+              <TableCell numeric>Free Quantity</TableCell>
+              <TableCell numeric>Total Per Q</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
