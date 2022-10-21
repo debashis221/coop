@@ -32,7 +32,6 @@ import InputAdornment from '@mui/material/InputAdornment'
 import Purchase from 'mdi-material-ui/ReceiptOutline'
 import Number from 'mdi-material-ui/Numeric0Box'
 import { axiosHelper } from 'src/axios/axios'
-import EditTable from 'src/views/tables/editTable'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -80,10 +79,11 @@ const RegisterPage = () => {
     axiosHelper.get(`/order?id=${id}`).then(res => {
       setOrderData(res.data[0])
       SetPurchaseOrder(res.data[0]?.purchase_order_no)
-      dispatch(resetData())
-      res.data[0]?.products?.map(item => {
-        dispatch(addProduct(item))
-      })
+      if (selectedProducts.length !== res.data[0]?.products.length || selectedProducts.length == 0) {
+        res.data[0]?.products?.map(item => {
+          dispatch(addProduct(item))
+        })
+      }
     })
   }
   useEffect(() => {
