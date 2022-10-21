@@ -79,16 +79,10 @@ const RegisterPage = () => {
     axiosHelper.get(`/order?id=${id}`).then(res => {
       setOrderData(res.data[0])
       SetPurchaseOrder(res.data[0]?.purchase_order_no)
-      // if (selectedProducts.length !== res.data[0]?.products.length || selectedProducts.length == 0) {
-      //   res.data[0]?.products?.map(item => {
-      //     dispatch(addProduct(item))
-      //   })
-      // }
+      dispatch(setProducts(res.data[0].products))
     })
   }
-  useEffect(() => {
-    orderData && orderData.length > 0 && dispatch(setProducts(orderData.products))
-  }, [orderData])
+
   useEffect(() => {
     getOrderData()
     return () => {
