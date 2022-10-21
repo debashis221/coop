@@ -80,7 +80,7 @@ const RegisterPage = () => {
     axiosHelper.get(`/order?id=${id}`).then(res => {
       setOrderData(res.data[0])
       SetPurchaseOrder(res.data[0]?.purchase_order_no)
-      dispatch(addProduct([]))
+      dispatch(resetData())
       res.data[0]?.products?.map(item => {
         dispatch(addProduct(item))
       })
