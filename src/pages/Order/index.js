@@ -8,6 +8,7 @@ import TableStickyHeader from 'src/views/tables/TableStickyHeader'
 import { getOrders } from 'src/redux/features/orderSlice'
 import { axiosHelper } from 'src/axios/axios'
 import { useRouter } from 'next/router'
+import { resetData } from 'src/redux/features/selectedProduct'
 
 const MUITable = () => {
   const orders = useSelector(state => state.orders.orders)
@@ -21,6 +22,7 @@ const MUITable = () => {
   })
   useEffect(() => {
     getSupplierData()
+    dispatch(resetData())
     return () => {}
   }, [orders])
   if (user.user.user === null) {
