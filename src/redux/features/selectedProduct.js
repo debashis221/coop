@@ -45,6 +45,9 @@ export const selectedProductSlice = createSlice({
       state.selectedProducts = []
       state.totalQuantity = 0
       state.totalPrice = 0
+    },
+    setProducts: (state, action) => {
+      state.selectedProducts = action.payload
     }
   }
 })
@@ -57,7 +60,8 @@ export const {
   setTotalPrice,
   resetData,
   updateFreeQuantity,
-  setTotalFreeQuantity
+  setTotalFreeQuantity,
+  setProducts
 } = selectedProductSlice.actions
 
 export default selectedProductSlice.reducer

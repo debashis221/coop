@@ -27,7 +27,7 @@ import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
 import TableBasic from 'src/views/tables/TableBasic'
 import ProductTable from 'src/views/tables/productTable'
-import { addProduct, resetData } from 'src/redux/features/selectedProduct'
+import { addProduct, resetData, setProducts } from 'src/redux/features/selectedProduct'
 import InputAdornment from '@mui/material/InputAdornment'
 import Purchase from 'mdi-material-ui/ReceiptOutline'
 import Number from 'mdi-material-ui/Numeric0Box'
@@ -79,13 +79,16 @@ const RegisterPage = () => {
     axiosHelper.get(`/order?id=${id}`).then(res => {
       setOrderData(res.data[0])
       SetPurchaseOrder(res.data[0]?.purchase_order_no)
-      if (selectedProducts.length !== res.data[0]?.products.length || selectedProducts.length == 0) {
-        res.data[0]?.products?.map(item => {
-          dispatch(addProduct(item))
-        })
-      }
+      // if (selectedProducts.length !== res.data[0]?.products.length || selectedProducts.length == 0) {
+      //   res.data[0]?.products?.map(item => {
+      //     dispatch(addProduct(item))
+      //   })
+      // }
     })
   }
+  useEffect(() => {
+    orderData && orderData.length > 0 && dispatch(setProducts(orderData.products))
+  }, [orderData])
   useEffect(() => {
     getOrderData()
     return () => {
